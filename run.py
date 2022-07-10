@@ -1,6 +1,14 @@
 import bs4, requests
 
-page_link = "https://pietralikelocals.com/"
+def get_input_url():
+    """
+    Get input url to scrape from user.
+    """
+    print("Are you ready to scrape a webpage?")
+    page_link = input("Enter the url you want to scrape:\n")
+
+    return page_link
+
 
 def get_page_html(page_link):
     """
@@ -12,7 +20,8 @@ def get_page_html(page_link):
     page_html = bs4.BeautifulSoup(response.text, "html.parser")
     print(page_html)
 
-def main ():
+def main():    
+    page_link = get_input_url()
     page_html = get_page_html(page_link)
 
 main()
