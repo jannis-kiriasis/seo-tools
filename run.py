@@ -10,5 +10,9 @@ def get_page_html(page_link):
     response = requests.get(page_link)
     response.raise_for_status()
     page_html = bs4.BeautifulSoup(response.text, "html.parser")
+    print(page_html)
 
-page_html = get_page_html(page_link)
+def main ():
+    page_html = get_page_html(page_link)
+
+main()
