@@ -31,7 +31,9 @@ def get_input_url():
     return page_link
 
 def validate_link(page_link):
-    
+    """ 
+    Check if the user input is a valid url.
+    """
     valid = validators.url(page_link)
     if valid == True:
         
