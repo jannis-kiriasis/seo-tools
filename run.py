@@ -47,7 +47,13 @@ def get_page_html(page_link):
     hreflangs = [[a["href"], a["hreflang"]] 
     for a in page_html.find_all("link", href=True, hreflang=True)]
 
+    #To display hreflangs in 1 cell in the worksheet
+    hreflangs_str = str(",".join(str(x) for x in hreflangs))
+
     h1 = [a.get_text() for a in page_html.find_all('h1')]
+
+    #To display h1s in 1 cell in the worksheet
+    h1_str = str(",".join(str(x) for x in h1))
 
     #Give me all the headers in a html document
     headers = page_html.find_all(["h1","h2","h3","h4","h5","h6"])
@@ -56,15 +62,18 @@ def get_page_html(page_link):
     #as different elements in a list
     list_headers = [[str(x)[1:3], x.get_text()] for x in headers]
 
+    #To display headers in 1 cell in the worksheet
+    headers_str = str(",".join(str(x) for x in list_headers))
+
     seo_elements = {
         "url": page_link,
         "title": title,
         "meta description": meta_description,
         "robots": robots,
         "canonical": canonical,
-        #"hreflangs": hreflangs,
-        #"h1": h1,
-        #"headers": list_headers
+        "hreflangs": hreflangs_str,
+        "h1": h1_str,
+        "headers": headers_str
     }
 
     return seo_elements
