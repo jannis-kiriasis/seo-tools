@@ -43,6 +43,7 @@ def get_page_html(page_link):
     list_headers = [[str(x)[1:3], x.get_text()] for x in headers]
 
     seo_elements = {
+        "url": page_link,
         "title": title,
         "meta description": meta_description,
         "robots": robots,
