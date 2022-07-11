@@ -39,7 +39,7 @@ def get_page_html(page_link):
     #Give me title tag, meta description, robots tags and canonical tag
     title = page_html.find("title").get_text()
     meta_description = page_html.find("meta", attrs={"name":"description"})["content"]
-    robots = page_html.find("meta", attrs={"name":"robots"})["content"].split(",")
+    robots = page_html.find("meta", attrs={"name":"robots"})["content"]
     canonical = page_html.find("link", attrs={"rel":"canonical"})["href"]
 
     #Give me all the links with href = True and hreflang = True. 
@@ -62,18 +62,32 @@ def get_page_html(page_link):
         "meta description": meta_description,
         "robots": robots,
         "canonical": canonical,
-        "hreflangs": hreflangs,
-        "h1": h1,
-        "headers": list_headers
+        #"hreflangs": hreflangs,
+        #"h1": h1,
+        #"headers": list_headers
     }
 
     return seo_elements
+
+def update_seo_tools_worksheet(seo_elements):
+    """ 
+    Receive a dictionary to be inserted in a worksheet.
+    Update the worksheet with the data provided.
+    """
+    print(f"Updating on_page_elements worksheet...\n")
+
+    on_page_elements.append_row(list(seo_elements.keys()))
+    on_page_elements.append_row(list(seo_elements.values()))
+
+    print("Worksheet updated.")
+
 
 def main():
     """ 
     Run all the program functions.
     """
     page_link = get_input_url()
-    page_html = get_page_html(page_link)
+    seo_elements = get_page_html(page_link)
+    update_seo_tools_worksheet(seo_elements)
 
 main()
