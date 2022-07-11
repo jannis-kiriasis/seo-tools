@@ -53,7 +53,7 @@ def get_page_html(page_link):
         "headers": list_headers
     }
 
-    print(seo_elements)
+    return seo_elements
 
 def main():
     """ 
