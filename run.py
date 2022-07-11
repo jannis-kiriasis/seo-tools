@@ -1,4 +1,4 @@
-import bs4, requests, gspread
+import bs4, requests, gspread, validators
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -18,12 +18,28 @@ def get_input_url():
     """
     Get input url to scrape from user.
     """
-    print("Are you ready to scrape a webpage?")
-    page_link = input("Enter the url you want to scrape:\n")
+    while True:
+        print("Are you ready to scrape a webpage?")
+        page_link = input("Enter the url you want to scrape:\n")
 
-    print(f"Thank you! I'm scraping {page_link}...\n")
+        print(f"Thank you! I'm validating {page_link}...\n")
+
+        if validate_link(page_link):
+            print("Url is valid!")
+            break
 
     return page_link
+
+def validate_link(page_link):
+    
+    valid = validators.url(page_link)
+    if valid == True:
+        
+        return page_link
+    else:
+        print("Invalid url...")
+        print("Please enter a valid url.\n")
+        return False
 
 def get_page_html(page_link):
     """
@@ -90,13 +106,13 @@ def update_seo_tools_worksheet(seo_elements):
 
     print("Worksheet updated.")
 
-
 def main():
     """ 
     Run all the program functions.
     """
     page_link = get_input_url()
-    seo_elements = get_page_html(page_link)
+    url = validate_link(page_link)
+    seo_elements = get_page_html(url)
     update_seo_tools_worksheet(seo_elements)
 
 main()
