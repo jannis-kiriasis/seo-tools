@@ -42,9 +42,6 @@ def get_input_url():
 
     return http_url
 
-    http_url = page_link
-    return http_url
-
 def add_http(page_link):
     """ 
     This function adds the http scheme in front of the url in case it is missing.
