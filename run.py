@@ -17,17 +17,40 @@ on_page_elements = SHEET.worksheet("on_page_elements")
 def get_input_url():
     """
     Get input url to scrape from user.
+    Check if the url starts with http, if not add http scheme.
+    After check for http, check if url works.
+    Return url with http.
     """
     while True:
         print("Are you ready to scrape a webpage?")
         page_link = input("Enter the url you want to scrape:\n")
 
         print(f"Thank you! I'm validating {page_link}...\n")
+        print("Checking http schema...\n")
 
-        if validate_link(page_link):
-            print("Url is valid!")
-            break
+        if page_link.startswith("http://" and "https://"):
+            if validate_link(page_link):
+                print("Url is valid!")
+                http_url = page_link
+                break
+        else:
+            http_url = add_http(page_link)
+            print(f"Added scheme. New url: {http_url}\n")
+            if validate_link(http_url):
+                print("Url is valid!")
+                break
 
+    return http_url
+
+    http_url = page_link
+    return http_url
+
+def add_http(page_link):
+    """ 
+    This function adds the http scheme in front of the url in case it is missing.
+    Then after the http as been added, the url is passed to validate_link.
+    """
+    page_link = "http://" + page_link
     return page_link
 
 def validate_link(page_link):
@@ -36,21 +59,21 @@ def validate_link(page_link):
     """
     valid = validators.url(page_link)
     if valid == True:
-        
-        return page_link
+        http_url = page_link
+        return http_url
     else:
         print("Invalid url...")
         print("Please enter a valid url.\n")
         return False
 
-def get_page_html(page_link):
+def get_page_html(http_url):
     """
     Send a get HTTP request to page_link and receive the html of the page.
     raise_for_status verifies that the request is good.
     Return a dictionary of the seo elements parsed.
     """
     print("Parsing the page html...\n")
-    response = requests.get(page_link)
+    response = requests.get(http_url)
     response.raise_for_status()
     page_html = bs4.BeautifulSoup(response.text, "html.parser")
 
@@ -84,7 +107,7 @@ def get_page_html(page_link):
     headers_str = str(",".join(str(x) for x in list_headers))
 
     seo_elements = {
-        "url": page_link,
+        "url": http_url,
         "title": title,
         "meta description": meta_description,
         "robots": robots,
@@ -113,8 +136,8 @@ def main():
     Run all the program functions.
     """
     page_link = get_input_url()
-    url = validate_link(page_link)
-    seo_elements = get_page_html(url)
+    http_url = validate_link(page_link)
+    seo_elements = get_page_html(http_url)
     update_seo_tools_worksheet(seo_elements)
 
 main()
