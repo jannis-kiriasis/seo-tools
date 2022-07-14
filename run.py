@@ -13,6 +13,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("seo_tools")
 
 on_page_elements = SHEET.worksheet("on_page_elements")
+headers_worksheet = SHEET.worksheet("headers")
 
 def get_input_url():
     """
@@ -70,10 +71,15 @@ def get_page_html(http_url):
     Return a dictionary of the seo elements parsed.
     """
     print("Parsing the page html...\n")
+    global response
     response = requests.get(http_url)
     response.raise_for_status()
+    global page_html
     page_html = bs4.BeautifulSoup(response.text, "html.parser")
 
+    return page_html, response
+
+def get_seo_elements(page_html, response, http_url):
     #If the input url redirects to a new url, the following loop gives a list
     #of all the redirects until the final url 
     for r in response.history:
@@ -93,6 +99,19 @@ def get_page_html(http_url):
     #To display hreflangs in 1 cell in the worksheet
     hreflangs_str = str(",".join(str(x) for x in hreflangs))
 
+    seo_elements = {
+        "input url": http_url,
+        "final url": final_url,
+        "title": title,
+        "meta description": meta_description,
+        "robots": robots,
+        "canonical": canonical,
+        "hreflangs": hreflangs_str,
+    }
+
+    return seo_elements
+
+def get_headers(page_html):
     h1 = [a.get_text() for a in page_html.find_all('h1')]
 
     #To display h1s in 1 cell in the worksheet
@@ -108,31 +127,47 @@ def get_page_html(http_url):
     #To display headers in 1 cell in the worksheet
     headers_str = str(",".join(str(x) for x in list_headers))
 
-    seo_elements = {
-        "input url": http_url,
-        "final url": final_url,
-        "title": title,
-        "meta description": meta_description,
-        "robots": robots,
-        "canonical": canonical,
-        "hreflangs": hreflangs_str,
-        "h1": h1_str,
-        "headers": headers_str
+
+    headers_dict = {
+        "h1": h1_str
     }
 
-    return seo_elements
+    return headers_dict
 
-def update_seo_tools_worksheet(seo_elements):
+def update_on_page_elements_worksheet(seo_elements):
     """ 
-    Receive a dictionary to be inserted in a worksheet.
+    Receive seo_elements to be inserted in a worksheet.
     Update the worksheet with the data provided.
     """
-    print(f"Updating on_page_elements worksheet...\n")
+    print(f"Updating on_page_elements worksheet...")
 
     on_page_elements.append_row(list(seo_elements.keys()))
     on_page_elements.append_row(list(seo_elements.values()))
 
-    print("Worksheet updated.")
+    print("on_page_elements worksheet updated.\n")
+
+def update_headers_worksheet(headers_dict):
+    """ 
+    Receive headers to be inserted in a worksheet.
+    Update the worksheet with the data provided.
+    """
+    print(f"Updating headers worksheet...")
+
+    """ 
+    for key, value in headers_dict.items():
+        if key == "h1":
+            headers_dict = {
+                "h1": seo_elements.get('h1', "n/a"),
+            }
+            print(seo_elements.get('h1', "n/a"))
+    return headers_dict
+    """
+
+    headers_worksheet.append_row(list(headers_dict.keys()))
+    headers_worksheet.append_row(list(headers_dict.values()))
+
+
+    print("headers worksheet updated.\n")
 
 def main():
     """ 
@@ -140,7 +175,10 @@ def main():
     """
     page_link = get_input_url()
     http_url = validate_link(page_link)
-    seo_elements = get_page_html(http_url)
-    update_seo_tools_worksheet(seo_elements)
+    get_page_html(http_url)
+    seo_elements = get_seo_elements(page_html, response, http_url)
+    headers_dict = get_headers(page_html)
+    update_on_page_elements_worksheet(seo_elements)
+    update_headers_worksheet(headers_dict)
 
 main()
