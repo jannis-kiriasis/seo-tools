@@ -110,11 +110,10 @@ def get_seo_elements(page_html, response, http_url):
     return seo_elements
 
 def get_headers(page_html):
-    h1 = [a.get_text() for a in page_html.find_all('h1')]
-
-    #To display h1s in 1 cell in the worksheet
-    h1_str = str(",".join(str(x) for x in h1))
-
+    """
+    Get the headers from the page html.
+    Create a list of header tags and a list of header tag values.
+    """
     #Give me all the headers in a html document
     headers = page_html.find_all(["h1","h2","h3","h4","h5","h6"])
  
@@ -122,15 +121,17 @@ def get_headers(page_html):
     #as different elements in a list
     list_headers = [[str(x)[1:3], x.get_text()] for x in headers]
 
-    #To display headers in 1 cell in the worksheet
-    headers_str = str(",".join(str(x) for x in list_headers))
+    #Separate the header tags and tag values in 2 different lists
+    i = 0    
+    header_tags=[]
+    header_values=[]
 
-
-    headers_dict = {
-        "h1": h1_str
-    }
-
-    return headers_dict
+    while i < len(list_headers):
+        header_tags.append(list_headers[i][0])
+        header_values.append(list_headers[i][1])
+        i += 1
+    
+    return header_tags, header_values
 
 def update_on_page_elements_worksheet(seo_elements):
     """ 
@@ -144,26 +145,15 @@ def update_on_page_elements_worksheet(seo_elements):
 
     print("on_page_elements worksheet updated.\n")
 
-def update_headers_worksheet(headers_dict):
+def update_headers_worksheet(header_tags, header_values):
     """ 
     Receive headers to be inserted in a worksheet.
     Update the worksheet with the data provided.
     """
     print(f"Updating headers worksheet...")
 
-    """ 
-    for key, value in headers_dict.items():
-        if key == "h1":
-            headers_dict = {
-                "h1": seo_elements.get('h1', "n/a"),
-            }
-            print(seo_elements.get('h1', "n/a"))
-    return headers_dict
-    """
-
-    headers_worksheet.append_row(list(headers_dict.keys()))
-    headers_worksheet.append_row(list(headers_dict.values()))
-
+    headers_worksheet.append_row(header_tags)
+    headers_worksheet.append_row(header_values)
 
     print("headers worksheet updated.\n")
 
@@ -175,8 +165,8 @@ def main():
     http_url = validate_link(page_link)
     page_html, response = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url)
-    headers_dict = get_headers(page_html)
+    header_tags, header_values = get_headers(page_html)
     update_on_page_elements_worksheet(seo_elements)
-    update_headers_worksheet(headers_dict)
+    update_headers_worksheet(header_tags, header_values)
 
 main()
