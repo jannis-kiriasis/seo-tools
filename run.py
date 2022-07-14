@@ -1,5 +1,6 @@
 import bs4, requests, gspread, validators
 from google.oauth2.service_account import Credentials
+import json
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -133,6 +134,17 @@ def get_headers(page_html):
     
     return header_tags, header_values
 
+def get_page_json(page_html):
+    json_schema = page_html.find('script',attrs={'type':'application/ld+json'})
+    json_file = json.loads(json_schema.get_text())
+
+    for x in json_file["@graph"]:
+        print(x["@type"])
+    
+    return json_file
+
+
+
 def update_on_page_elements_worksheet(seo_elements):
     """ 
     Receive seo_elements to be inserted in a worksheet.
@@ -166,6 +178,7 @@ def main():
     page_html, response = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url)
     header_tags, header_values = get_headers(page_html)
+    json_file = get_page_json(page_html)
     update_on_page_elements_worksheet(seo_elements)
     update_headers_worksheet(header_tags, header_values)
 
