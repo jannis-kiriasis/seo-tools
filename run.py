@@ -71,10 +71,8 @@ def get_page_html(http_url):
     Return a dictionary of the seo elements parsed.
     """
     print("Parsing the page html...\n")
-    global response
     response = requests.get(http_url)
     response.raise_for_status()
-    global page_html
     page_html = bs4.BeautifulSoup(response.text, "html.parser")
 
     return page_html, response
@@ -175,7 +173,7 @@ def main():
     """
     page_link = get_input_url()
     http_url = validate_link(page_link)
-    get_page_html(http_url)
+    page_html, response = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url)
     headers_dict = get_headers(page_html)
     update_on_page_elements_worksheet(seo_elements)
