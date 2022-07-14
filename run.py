@@ -15,6 +15,8 @@ SHEET = GSPREAD_CLIENT.open("seo_tools")
 
 on_page_elements = SHEET.worksheet("on_page_elements")
 headers_worksheet = SHEET.worksheet("headers")
+schema = SHEET.worksheet("schema")
+
 
 def get_input_url():
     """
@@ -124,8 +126,8 @@ def get_headers(page_html):
 
     #Separate the header tags and tag values in 2 different lists
     i = 0    
-    header_tags=[]
-    header_values=[]
+    header_tags = []
+    header_values = []
 
     while i < len(list_headers):
         header_tags.append(list_headers[i][0])
@@ -138,12 +140,11 @@ def get_page_json(page_html):
     json_schema = page_html.find('script',attrs={'type':'application/ld+json'})
     json_file = json.loads(json_schema.get_text())
 
+    schema_types = []
+
     for x in json_file["@graph"]:
-        print(x["@type"])
-    
-    return json_file
-
-
+        schema_types.append(x["@type"])
+    return schema_types
 
 def update_on_page_elements_worksheet(seo_elements):
     """ 
@@ -169,6 +170,18 @@ def update_headers_worksheet(header_tags, header_values):
 
     print("headers worksheet updated.\n")
 
+def update_schema_worksheet(schema_types):
+    """ 
+    Receive json schema to be inserted in a worksheet.
+    Update the worksheet with the data provided.
+    """
+    print(f"Updating schema worksheet...")
+
+    schema.append_row(schema_types)
+
+    print("schema worksheet updated.\n")
+
+
 def main():
     """ 
     Run all the program functions.
@@ -178,8 +191,9 @@ def main():
     page_html, response = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url)
     header_tags, header_values = get_headers(page_html)
-    json_file = get_page_json(page_html)
+    schema_types = get_page_json(page_html)
     update_on_page_elements_worksheet(seo_elements)
     update_headers_worksheet(header_tags, header_values)
+    update_schema_worksheet(schema_types)
 
 main()
