@@ -74,6 +74,11 @@ def get_page_html(http_url):
     response.raise_for_status()
     page_html = bs4.BeautifulSoup(response.text, "html.parser")
 
+    #If the input url redirects to a new url, the following loop gives a list
+    #of all the redirects until the final url 
+    for r in response.history:
+        final_url = response.url
+
     #Give me title tag, meta description, robots tags and canonical tag
     title = page_html.find("title").get_text()
     meta_description = page_html.find("meta", attrs={"name":"description"})["content"]
@@ -104,7 +109,8 @@ def get_page_html(http_url):
     headers_str = str(",".join(str(x) for x in list_headers))
 
     seo_elements = {
-        "url": http_url,
+        "input url": http_url,
+        "final url": final_url,
         "title": title,
         "meta description": meta_description,
         "robots": robots,
