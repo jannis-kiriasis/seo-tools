@@ -141,10 +141,13 @@ def get_page_json(page_html):
     json_file = json.loads(json_schema.get_text())
 
     schema_types = []
+    schema_headings = []
 
     for x in json_file["@graph"]:
         schema_types.append(x["@type"])
-    return schema_types
+        schema_headings.append("@type")
+    return schema_types, schema_headings
+
 
 def update_on_page_elements_worksheet(seo_elements):
     """ 
@@ -170,13 +173,14 @@ def update_headers_worksheet(header_tags, header_values):
 
     print("headers worksheet updated.\n")
 
-def update_schema_worksheet(schema_types):
+def update_schema_worksheet(schema_types, schema_headings):
     """ 
     Receive json schema to be inserted in a worksheet.
     Update the worksheet with the data provided.
     """
     print(f"Updating schema worksheet...")
 
+    schema.append_row(schema_headings)
     schema.append_row(schema_types)
 
     print("schema worksheet updated.\n")
@@ -191,9 +195,9 @@ def main():
     page_html, response = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url)
     header_tags, header_values = get_headers(page_html)
-    schema_types = get_page_json(page_html)
+    schema_types, schema_headings = get_page_json(page_html)
     update_on_page_elements_worksheet(seo_elements)
     update_headers_worksheet(header_tags, header_values)
-    update_schema_worksheet(schema_types)
+    update_schema_worksheet(schema_types, schema_headings)
 
 main()
