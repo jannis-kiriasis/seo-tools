@@ -104,7 +104,9 @@ def get_seo_elements(page_html, response, http_url):
         "input url": http_url,
         "final url": final_url,
         "title": title,
-        "meta description": meta_description,
+        "title_length": str(len(title)) + "/ 65",
+        "meta_description": meta_description,
+        "meta_description_length": str(len(meta_description)) + "/ 154",
         "robots": robots,
         "canonical": canonical,
         "hreflangs": hreflangs_str,
@@ -199,5 +201,4 @@ def main():
     update_on_page_elements_worksheet(seo_elements)
     update_headers_worksheet(header_tags, header_values)
     update_schema_worksheet(schema_types, schema_headings)
-
 main()
