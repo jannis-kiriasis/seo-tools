@@ -16,6 +16,7 @@ SHEET = GSPREAD_CLIENT.open("seo_tools")
 on_page_elements = SHEET.worksheet("on_page_elements")
 headers_worksheet = SHEET.worksheet("headers")
 schema = SHEET.worksheet("schema")
+internal_links_worksheet = SHEET.worksheet("internal_links")
 
 internal_links = []
 
@@ -155,17 +156,10 @@ def get_all_internal_links(page_html, response, seo_elements):
     url = seo_elements["final url"]
 
     for link in page_html.find_all("a"):
+        
+        internal_links.append(link.get("href"))
 
-        href = link.attrs["href"]
-
-        if href.startswith("/"):
-            url = url + href
-
-            if url not in internal_links:
-                internal_links.append(url)
-
-                get_all_internal_links(page_html, response, seo_elements)
-
+    return internal_links
 
 def update_on_page_elements_worksheet(seo_elements):
     """ 
@@ -203,6 +197,16 @@ def update_schema_worksheet(schema_types, schema_headings):
 
     print("schema worksheet updated.\n")
 
+def update_internal_links_worksheet(internal_links):
+    """ 
+    Receive internal_links to be inserted in a worksheet.
+    Update the worksheet with the data provided.
+    """
+    print(f"Updating internal_links worksheet...")
+
+    internal_links_worksheet.append_row(internal_links)
+
+    print("internal_links worksheet updated.\n")
 
 def main():
     """ 
@@ -218,4 +222,5 @@ def main():
     update_on_page_elements_worksheet(seo_elements)
     update_headers_worksheet(header_tags, header_values)
     update_schema_worksheet(schema_types, schema_headings)
+    update_internal_links_worksheet(internal_links)
 main()
