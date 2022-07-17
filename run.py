@@ -174,19 +174,22 @@ def get_seo_elements(page_html, response, http_url):
 
     return seo_elements
 
-def get_headers(page_html):
+def get_headers(page_html, seo_elements):
     """
     Get the headers from the page html.
     Create a list of header tags and a list of header tag values.
     """
     #Give me all the headers in a html document
+
     headers = page_html.find_all(["h1","h2","h3","h4","h5","h6"])
- 
+
     #Cleaning the headers list to get the tag and the text 
     #as different elements in a list
     list_headers = [[str(x)[1:3], x.get_text()] for x in headers]
 
     #Separate the header tags and tag values in 2 different lists
+    #The while loop takes all the elements in position 0 and create a list.
+    #Then all the elements in position 1 and create a list.
     i = 0    
     header_tags = []
     header_values = []
@@ -196,6 +199,16 @@ def get_headers(page_html):
         header_values.append(list_headers[i][1])
         i += 1
     
+    #If the headings don't exist, write "URL headings not set" instead of 
+    #leaving a black worksheet
+
+    if header_tags == [] and header_values == []:
+
+        header_tags = ["'" + seo_elements["final url"] + "'" + " headings not set"]
+        header_values = ["'" + seo_elements["final url"] + "'" + " headings not set"]
+    
+    print(header_tags, header_values)
+
     return header_tags, header_values
 
 def get_page_json(page_html):
@@ -289,11 +302,11 @@ def main():
     http_url = validate_link(page_link)
     page_html, response = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url)
-    #header_tags, header_values = get_headers(page_html)
+    header_tags, header_values = get_headers(page_html, seo_elements)
     #schema_types, schema_headings = get_page_json(page_html)
     #internal_links = get_all_internal_links(page_html, response, seo_elements)
     update_on_page_elements_worksheet(seo_elements)
-    #update_headers_worksheet(header_tags, header_values)
+    update_headers_worksheet(header_tags, header_values)
     #update_schema_worksheet(schema_types, schema_headings)
     #update_internal_links_worksheet(internal_links)
 
