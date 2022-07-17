@@ -17,6 +17,7 @@ on_page_elements = SHEET.worksheet("on_page_elements")
 headers_worksheet = SHEET.worksheet("headers")
 schema = SHEET.worksheet("schema")
 
+internal_links = []
 
 def get_input_url():
     """
@@ -73,11 +74,9 @@ def get_page_html(http_url):
     raise_for_status verifies that the request is good.
     Return a dictionary of the seo elements parsed.
     """
-    print("Parsing the page html...\n")
+    print(f"Parsing {http_url} page html...\n")
     response = requests.get(http_url)
-    response.raise_for_status()
     page_html = bs4.BeautifulSoup(response.text, "html.parser")
-
     return page_html, response
 
 def get_seo_elements(page_html, response, http_url):
@@ -91,6 +90,7 @@ def get_seo_elements(page_html, response, http_url):
     meta_description = page_html.find("meta", attrs={"name":"description"})["content"]
     robots = page_html.find("meta", attrs={"name":"robots"})["content"]
     canonical = page_html.find("link", attrs={"rel":"canonical"})["href"]
+
 
     #Give me all the links with href = True and hreflang = True. 
     #This returns all the hreflang
@@ -150,6 +150,22 @@ def get_page_json(page_html):
         schema_headings.append("@type")
     return schema_types, schema_headings
 
+def get_all_internal_links(page_html, response, seo_elements):
+
+    url = seo_elements["final url"]
+
+    for link in page_html.find_all("a"):
+
+        href = link.attrs["href"]
+
+        if href.startswith("/"):
+            url = url + href
+
+            if url not in internal_links:
+                internal_links.append(url)
+
+                get_all_internal_links(page_html, response, seo_elements)
+
 
 def update_on_page_elements_worksheet(seo_elements):
     """ 
@@ -198,6 +214,7 @@ def main():
     seo_elements = get_seo_elements(page_html, response, http_url)
     header_tags, header_values = get_headers(page_html)
     schema_types, schema_headings = get_page_json(page_html)
+    internal_links = get_all_internal_links(page_html, response, seo_elements)
     update_on_page_elements_worksheet(seo_elements)
     update_headers_worksheet(header_tags, header_values)
     update_schema_worksheet(schema_types, schema_headings)
