@@ -98,25 +98,67 @@ def get_page_html(http_url):
     return page_html, response
 
 def get_seo_elements(page_html, response, http_url):
+    """
+    This function finds all the SEO on page elements and builds a dictionary.
+    Every SEO element is checked against type None. This is because 
+    the rules are set to find the SEO elements only if they exists, 
+    are spelled correctly and are lowercase. Without the checks in place, 
+    the function will throw multiple errors.
+    """
+
+    print("Getting SEO on page elements...")
+
     #If the input url redirects to a new url, the following loop gives a list
     #of all the redirects until the final url 
+
     for r in response.history:
         final_url = response.url
 
-    #Give me title tag, meta description, robots tags and canonical tag
-    title = page_html.find("title").get_text()
-    meta_description = page_html.find("meta", attrs={"name":"description"})["content"]
-    robots = page_html.find("meta", attrs={"name":"robots"})["content"]
-    canonical = page_html.find("link", attrs={"rel":"canonical"})["href"]
+    #check if the title tag isn't None with the find method
+    title_temp = page_html.find("title")
 
+    if title_temp is None:
+        title = "not available"
+    if title_temp is not None:
+        title = title_temp.get_text()
+
+    #check if the meta description isn't None with the find method
+
+    meta_desc_temp = page_html.find("meta", attrs={"name":"description"})
+    
+    if meta_desc_temp is None:
+        meta_description = "not available"
+    if meta_desc_temp is not None:
+        meta_description = meta_desc_temp["content"]
+
+    #check if robots aren't None with the find method
+
+    robots_temp = page_html.find("meta", attrs={"name":"robots"})
+
+    if robots_temp is None:
+        robots = "Not available"
+    if robots_temp is not None:
+        robots = robots_temp["content"]
+    
+    #check if rel=canonical isn't None with the find method
+
+    canonical_temp = page_html.find("link", attrs={"rel":"canonical"})
+    
+    if canonical_temp is None:
+        canonical = "Not available"
+    if canonical_temp is not None:
+        canonical = canonical_temp["href"]   
 
     #Give me all the links with href = True and hreflang = True. 
     #This returns all the hreflang
-    hreflangs = [[a["href"], a["hreflang"]] 
-    for a in page_html.find_all("link", href=True, hreflang=True)]
+
+    hreflangs = [[a['href'], a["hreflang"]] for a in page_html.find_all('link', href=True, hreflang=True)]
 
     #To display hreflangs in 1 cell in the worksheet
     hreflangs_str = str(",".join(str(x) for x in hreflangs))
+
+    if hreflangs_str == "":
+        hreflangs_str = "Not set"
 
     seo_elements = {
         "input url": http_url,
@@ -157,16 +199,27 @@ def get_headers(page_html):
     return header_tags, header_values
 
 def get_page_json(page_html):
+    """
+    Get page json and extract schema mark up.
+    The error handling skip this step when the schema is not found or invalid or 
+    doens't follow the estraction rule.
+    """
+    print("Parsing the page structured data...")
     json_schema = page_html.find('script',attrs={'type':'application/ld+json'})
     json_file = json.loads(json_schema.get_text())
 
     schema_types = []
     schema_headings = []
 
-    for x in json_file["@graph"]:
-        schema_types.append(x["@type"])
-        schema_headings.append("@type")
-    return schema_types, schema_headings
+    try:
+        for x in json_file["@graph"]:
+            schema_types.append(x["@type"])
+            schema_headings.append("@type")
+        return schema_types, schema_headings
+        print("Valid structured data...")
+    except:
+        print("Can't collect strucutured data...")
+        pass
 
 def get_all_internal_links(page_html, response, seo_elements):
 
@@ -184,6 +237,8 @@ def update_on_page_elements_worksheet(seo_elements):
     Update the worksheet with the data provided.
     """
     print(f"Updating on_page_elements worksheet...")
+
+    print(type(seo_elements))
 
     on_page_elements.append_row(list(seo_elements.keys()))
     on_page_elements.append_row(list(seo_elements.values()))
@@ -236,16 +291,18 @@ def main():
     http_url = validate_link(page_link)
     page_html, response = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url)
-    header_tags, header_values = get_headers(page_html)
-    schema_types, schema_headings = get_page_json(page_html)
-    internal_links = get_all_internal_links(page_html, response, seo_elements)
-    update_on_page_elements_worksheet(seo_elements)
-    update_headers_worksheet(header_tags, header_values)
-    update_schema_worksheet(schema_types, schema_headings)
-    update_internal_links_worksheet(internal_links)
+    #header_tags, header_values = get_headers(page_html)
+    #schema_types, schema_headings = get_page_json(page_html)
+    #internal_links = get_all_internal_links(page_html, response, seo_elements)
+    #update_on_page_elements_worksheet(seo_elements)
+    #update_headers_worksheet(header_tags, header_values)
+    #update_schema_worksheet(schema_types, schema_headings)
+    #update_internal_links_worksheet(internal_links)
+
+main()
+#option_selection()
 
 def site_urls():
     site="https://pietralikelocals.com"
     scrape(site)
 
-option_selection()
