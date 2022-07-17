@@ -18,6 +18,21 @@ headers_worksheet = SHEET.worksheet("headers")
 schema = SHEET.worksheet("schema")
 internal_links_worksheet = SHEET.worksheet("internal_links")
 
+def option_selection():
+    option = 0
+    while option != "2":
+        print("\nEnter one of the following:\n")
+        print("\n1 to enter a URL and get a list of the pages within that subdomain.\n")
+        print("\n2 to enter a URL and get its SEO on page elements.\n")
+
+        option = input("Enter 1 or 2:\n")
+
+        if option == "2":
+            main()
+        else:
+            print("Invalid entry. Enter 1 or 2")
+
+
 internal_links = []
 
 def get_input_url():
@@ -223,4 +238,5 @@ def main():
     update_headers_worksheet(header_tags, header_values)
     update_schema_worksheet(schema_types, schema_headings)
     update_internal_links_worksheet(internal_links)
-main()
+
+option_selection()
