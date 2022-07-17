@@ -19,6 +19,9 @@ schema = SHEET.worksheet("schema")
 internal_links_worksheet = SHEET.worksheet("internal_links")
 
 def option_selection():
+    """
+    Select an option to start one of the 2 programs.
+    """
     option = 0
     while option != "2":
         print("\nEnter one of the following:\n")
