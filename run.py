@@ -238,8 +238,6 @@ def update_on_page_elements_worksheet(seo_elements):
     """
     print(f"Updating on_page_elements worksheet...")
 
-    print(type(seo_elements))
-
     on_page_elements.append_row(list(seo_elements.keys()))
     on_page_elements.append_row(list(seo_elements.values()))
 
@@ -294,7 +292,7 @@ def main():
     #header_tags, header_values = get_headers(page_html)
     #schema_types, schema_headings = get_page_json(page_html)
     #internal_links = get_all_internal_links(page_html, response, seo_elements)
-    #update_on_page_elements_worksheet(seo_elements)
+    update_on_page_elements_worksheet(seo_elements)
     #update_headers_worksheet(header_tags, header_values)
     #update_schema_worksheet(schema_types, schema_headings)
     #update_internal_links_worksheet(internal_links)
