@@ -106,7 +106,7 @@ def get_seo_elements(page_html, response, http_url):
     the function will throw multiple errors.
     """
 
-    print("Getting SEO on page elements...")
+    print("Getting SEO on page elements...\n")
 
     #If the input url redirects to a new url, the following loop gives a list
     #of all the redirects until the final url 
@@ -207,8 +207,6 @@ def get_headers(page_html, seo_elements):
         header_tags = ["'" + seo_elements["final url"] + "'" + " headings not set"]
         header_values = ["'" + seo_elements["final url"] + "'" + " headings not set"]
     
-    print(header_tags, header_values)
-
     return header_tags, header_values
 
 def get_page_json(page_html):
@@ -217,7 +215,8 @@ def get_page_json(page_html):
     The error handling skip this step when the schema is not found or invalid or 
     doens't follow the estraction rule.
     """
-    print("Parsing the page structured data...")
+    print("Parsing the page structured data...\n")
+ 
     json_schema = page_html.find('script',attrs={'type':'application/ld+json'})
     json_file = json.loads(json_schema.get_text())
 
@@ -226,13 +225,15 @@ def get_page_json(page_html):
 
     try:
         for x in json_file["@graph"]:
-            schema_types.append(x["@type"])
             schema_headings.append("@type")
-        return schema_types, schema_headings
-        print("Valid structured data...")
+            schema_types.append(x["@type"])            
     except:
-        print("Can't collect strucutured data...")
+        schema_types = ["Schema structured data not available. @graph not found"]
         pass
+
+    return schema_types, schema_headings
+
+    print("Valid structured data...")
 
 def get_all_internal_links(page_html, response, seo_elements):
 
@@ -275,8 +276,8 @@ def update_schema_worksheet(schema_types, schema_headings):
     """
     print(f"Updating schema worksheet...")
 
-    schema.append_row(schema_headings)
     try:
+        schema.append_row(schema_headings)
         schema.append_row(schema_types)
         print("schema worksheet updated.\n")
     except:
@@ -303,11 +304,11 @@ def main():
     page_html, response = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url)
     header_tags, header_values = get_headers(page_html, seo_elements)
-    #schema_types, schema_headings = get_page_json(page_html)
+    schema_types, schema_headings = get_page_json(page_html)
     #internal_links = get_all_internal_links(page_html, response, seo_elements)
     update_on_page_elements_worksheet(seo_elements)
     update_headers_worksheet(header_tags, header_values)
-    #update_schema_worksheet(schema_types, schema_headings)
+    update_schema_worksheet(schema_types, schema_headings)
     #update_internal_links_worksheet(internal_links)
 
 main()
