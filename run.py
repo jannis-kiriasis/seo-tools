@@ -23,20 +23,19 @@ def option_selection():
     Select an option to start one of the 2 programs.
     """
     option = 0
-    while option != "2":
+    while option != "2" and option != "1":
         print("\nEnter one of the following:\n")
-        print("\n1 to enter a URL and get a list of the pages within that subdomain.\n")
-        print("\n2 to enter a URL and get its SEO on page elements.\n")
+        print("\n1 to enter a URL and get a list of the pages within that subdomain.")
+        print("2 to enter a URL and get its SEO on page elements.\n")
 
         option = input("Enter 1 or 2:\n")
 
         if option == "2":
             main()
+        if option == "1":
+            site_urls()
         else:
-            print("Invalid entry. Enter 1 or 2")
-
-
-internal_links = []
+            print("Invalid entry. Enter 1 or 2.")
 
 def get_input_url():
     """
@@ -171,7 +170,7 @@ def get_page_json(page_html):
 
 def get_all_internal_links(page_html, response, seo_elements):
 
-    url = seo_elements["final url"]
+    internal_links = []
 
     for link in page_html.find_all("a"):
         
@@ -211,9 +210,12 @@ def update_schema_worksheet(schema_types, schema_headings):
     print(f"Updating schema worksheet...")
 
     schema.append_row(schema_headings)
-    schema.append_row(schema_types)
-
-    print("schema worksheet updated.\n")
+    try:
+        schema.append_row(schema_types)
+        print("schema worksheet updated.\n")
+    except:
+        print("!!!schema worksheet not updated due to invalid schema.!!!\n")
+        pass
 
 def update_internal_links_worksheet(internal_links):
     """ 
@@ -241,5 +243,9 @@ def main():
     update_headers_worksheet(header_tags, header_values)
     update_schema_worksheet(schema_types, schema_headings)
     update_internal_links_worksheet(internal_links)
+
+def site_urls():
+    site="https://pietralikelocals.com"
+    scrape(site)
 
 option_selection()
