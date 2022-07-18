@@ -293,6 +293,7 @@ def update_schema_worksheet(schema_types, schema_headings):
         print("schema worksheet updated.\n")
     except:
         print("!!!schema worksheet not updated due to invalid schema.!!!\n")
+        schema.update("A2", "Schema not available")
         pass
 
 def update_internal_links_worksheet(internal_links):
