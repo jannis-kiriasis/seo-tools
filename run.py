@@ -53,14 +53,12 @@ def get_input_url():
 
         if page_link.startswith("http://") or page_link.startswith("https://"):
             if validate_link(page_link):
-                print("Url is valid!")
                 http_url = page_link
                 break
         else:
             http_url = add_http(page_link)
             print(f"Added scheme. New url: {http_url}\n")
             if validate_link(http_url):
-                print("Url is valid!")
                 break
 
     return http_url
@@ -77,6 +75,17 @@ def validate_link(page_link):
     """ 
     Check if the user input is a valid url.
     """
+
+    #This logic check if the url is real by sending a request.
+    #If the url is formatted correctly it will go to the next validation.
+    try:
+        r = requests.get(page_link)
+    except:
+        print("Url not valid. The program will restart.")
+        print("Please enter a real url.\n")
+        get_input_url()
+
+    #This validation checks if the url is accessible (if there is a server error)
     valid = validators.url(page_link)
     if valid == True:
         http_url = page_link
@@ -92,6 +101,7 @@ def get_page_html(http_url):
     raise_for_status verifies that the request is good.
     Return a dictionary of the seo elements parsed.
     """
+    print("Url is valid...\n")
     print(f"Parsing {http_url} page html...\n")
 
     response = requests.get(http_url)
@@ -99,6 +109,8 @@ def get_page_html(http_url):
     #I used the final url of the redirection chain of response because using the
     #input url would cause errors later.
     final_url = response.url
+
+    print(f"{http_url} redirects to {final_url}...\n")
 
     #Get html of final_url
     response = requests.get(final_url)
