@@ -22,7 +22,7 @@ def option_selection():
     """
     Select an option to start one of the 2 programs.
     """
-    option = 0
+    option = "0"
     while option != "2" and option != "1":
         print("\nEnter one of the following:\n")
         print("\n1 to enter a URL and get a list of the pages within that subdomain.")
@@ -155,7 +155,7 @@ def get_seo_elements(page_html, response, http_url, final_url):
     #Give me all the links with href = True and hreflang = True. 
     #This returns all the hreflang
 
-    hreflangs = [[a['href'], a["hreflang"]] for a in page_html.find_all('link', href=True, hreflang=True)]
+    hreflangs = [[a["href"], a["hreflang"]] for a in page_html.find_all("link", href=True, hreflang=True)]
 
     #To display hreflangs in 1 cell in the worksheet
     hreflangs_str = str(",".join(str(x) for x in hreflangs))
@@ -223,7 +223,7 @@ def get_page_json(page_html):
     schema_types = []
     schema_headings = []
     
-    json_schema = page_html.find('script',attrs={'type':'application/ld+json'})
+    json_schema = page_html.find("script",attrs={"type":"application/ld+json"})
 
     if json_schema is None:
         schema_headings = ["There is no structured data."]
@@ -302,7 +302,7 @@ def update_internal_links_worksheet(internal_links):
     """
     print(f"Updating internal_links worksheet...")
 
-    internal_links_worksheet.update('A1', [internal_links])
+    internal_links_worksheet.update("A1", [internal_links])
 
     print("internal_links worksheet updated.\n")
 
