@@ -1,6 +1,6 @@
-import bs4, requests, gspread, validators
+import bs4, requests, gspread, validators, json
 from google.oauth2.service_account import Credentials
-import json
+from googleapiclient import discovery
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -242,7 +242,7 @@ def get_page_json(page_html):
 
     print("Valid structured data...")
 
-def get_all_internal_links(page_html, response, seo_elements):
+def get_all_internal_links(page_html):
     """
     Get all the links on the input webpage. Returns a list of links.
     """
@@ -251,8 +251,6 @@ def get_all_internal_links(page_html, response, seo_elements):
     for link in page_html.find_all("a"):
         internal_links.append(link.get("href"))
     
-    print(internal_links)
-
     return internal_links
 
 def update_on_page_elements_worksheet(seo_elements):
@@ -301,7 +299,7 @@ def update_internal_links_worksheet(internal_links):
     """
     print(f"Updating internal_links worksheet...")
 
-    internal_links_worksheet.append_row(internal_links)
+    internal_links_worksheet.update('A1', [internal_links])
 
     print("internal_links worksheet updated.\n")
 
@@ -315,11 +313,11 @@ def main():
     seo_elements = get_seo_elements(page_html, response, http_url)
     header_tags, header_values = get_headers(page_html, seo_elements)
     schema_types, schema_headings = get_page_json(page_html)
-    internal_links = get_all_internal_links(page_html, response, seo_elements)
+    internal_links = get_all_internal_links(page_html)
     update_on_page_elements_worksheet(seo_elements)
     update_headers_worksheet(header_tags, header_values)
     update_schema_worksheet(schema_types, schema_headings)
-    #update_internal_links_worksheet(internal_links)
+    update_internal_links_worksheet(internal_links)
 
 main()
 #option_selection()
