@@ -306,6 +306,25 @@ def update_internal_links_worksheet(internal_links):
 
     print("internal_links worksheet updated.\n")
 
+def final():
+    """
+    Give a final message to the user. If the user enter 'new' the program restarts
+    automatically.
+    """
+    print("All the operation have been completed.")
+    print("Check out the spreadsheet\nhttps://docs.google.com/spreadsheets/d/116Jzab1G3xjA5_K9yNMnzWjsDGHHxbFNwTS3G3YOO7E/edit?usp=sharing\nto see your results.\n")
+
+    new_crawl = "old"
+    while new_crawl != "new":
+
+        new_crawl = input("Enter 'new' to run a new page crawl:\n")
+
+        if new_crawl == "new":
+            print("\n")
+            main()
+        else:
+            print("Invalid entry. Enter 'new' to restart.\n")
+
 def main():
     """ 
     Run all the program functions.
@@ -314,13 +333,14 @@ def main():
     http_url = validate_link(page_link)
     page_html, response, final_url = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url, final_url)
-    #header_tags, header_values = get_headers(page_html, seo_elements)
-    #schema_types, schema_headings = get_page_json(page_html)
-    #internal_links = get_all_internal_links(page_html)
+    header_tags, header_values = get_headers(page_html, seo_elements)
+    schema_types, schema_headings = get_page_json(page_html)
+    internal_links = get_all_internal_links(page_html)
     update_on_page_elements_worksheet(seo_elements)
-    #update_headers_worksheet(header_tags, header_values)
-    #update_schema_worksheet(schema_types, schema_headings)
-    #update_internal_links_worksheet(internal_links)
+    update_headers_worksheet(header_tags, header_values)
+    update_schema_worksheet(schema_types, schema_headings)
+    update_internal_links_worksheet(internal_links)
+    final()
 
 main()
 #option_selection()
