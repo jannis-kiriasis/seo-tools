@@ -226,6 +226,10 @@ def get_page_json(page_html):
         schema_headings = ["There is no structured data."]
     if json_schema is not None:
         json_file = json.loads(json_schema.get_text())
+
+        #In most of the cases a schema dictiorary starts with @graph, 
+        #but not always. At this time, I can find the schema @type only if the 
+        #dictiorary is @graph.
         try:
             for x in json_file["@graph"]:
                 schema_headings.append("@type")
