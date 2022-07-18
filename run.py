@@ -93,11 +93,20 @@ def get_page_html(http_url):
     Return a dictionary of the seo elements parsed.
     """
     print(f"Parsing {http_url} page html...\n")
-    response = requests.get(http_url)
-    page_html = bs4.BeautifulSoup(response.text, "html.parser")
-    return page_html, response
 
-def get_seo_elements(page_html, response, http_url):
+    response = requests.get(http_url)
+
+    #I used the final url of the redirection chain of response because using the
+    #input url would cause errors later.
+    final_url = response.url
+
+    #Get html of final_url
+    response = requests.get(final_url)
+    page_html = bs4.BeautifulSoup(response.text, "html.parser")
+
+    return page_html, response, final_url
+
+def get_seo_elements(page_html, response, http_url, final_url):
     """
     This function finds all the SEO on page elements and builds a dictionary.
     Every SEO element is checked against type None. This is because 
@@ -107,12 +116,6 @@ def get_seo_elements(page_html, response, http_url):
     """
 
     print("Getting SEO on page elements...\n")
-
-    #If the input url redirects to a new url, the following loop gives a list
-    #of all the redirects until the final url 
-
-    for r in response.history:
-        final_url = response.url
 
     #check if the title tag isn't None with the find method
     title_temp = page_html.find("title")
@@ -309,15 +312,15 @@ def main():
     """
     page_link = get_input_url()
     http_url = validate_link(page_link)
-    page_html, response = get_page_html(http_url)
-    seo_elements = get_seo_elements(page_html, response, http_url)
-    header_tags, header_values = get_headers(page_html, seo_elements)
-    schema_types, schema_headings = get_page_json(page_html)
-    internal_links = get_all_internal_links(page_html)
+    page_html, response, final_url = get_page_html(http_url)
+    seo_elements = get_seo_elements(page_html, response, http_url, final_url)
+    #header_tags, header_values = get_headers(page_html, seo_elements)
+    #schema_types, schema_headings = get_page_json(page_html)
+    #internal_links = get_all_internal_links(page_html)
     update_on_page_elements_worksheet(seo_elements)
-    update_headers_worksheet(header_tags, header_values)
-    update_schema_worksheet(schema_types, schema_headings)
-    update_internal_links_worksheet(internal_links)
+    #update_headers_worksheet(header_tags, header_values)
+    #update_schema_worksheet(schema_types, schema_headings)
+    #update_internal_links_worksheet(internal_links)
 
 main()
 #option_selection()
