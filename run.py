@@ -51,7 +51,7 @@ def get_input_url():
         print(f"Thank you! I'm validating {page_link}...\n")
         print("Checking http schema...\n")
 
-        if page_link.startswith("http://" and "https://"):
+        if page_link.startswith("http://") or page_link.startswith("https://"):
             if validate_link(page_link):
                 print("Url is valid!")
                 http_url = page_link
