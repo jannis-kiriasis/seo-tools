@@ -217,31 +217,37 @@ def get_page_json(page_html):
     """
     print("Parsing the page structured data...\n")
  
-    json_schema = page_html.find('script',attrs={'type':'application/ld+json'})
-    json_file = json.loads(json_schema.get_text())
-
     schema_types = []
     schema_headings = []
+    
+    json_schema = page_html.find('script',attrs={'type':'application/ld+json'})
 
-    try:
-        for x in json_file["@graph"]:
-            schema_headings.append("@type")
-            schema_types.append(x["@type"])            
-    except:
-        schema_types = ["Schema structured data not available. @graph not found"]
-        pass
+    if json_schema is None:
+        schema_headings = ["There is no structured data."]
+    if json_schema is not None:
+        json_file = json.loads(json_schema.get_text())
+        try:
+            for x in json_file["@graph"]:
+                schema_headings.append("@type")
+                schema_types.append(x["@type"])            
+        except:
+            schema_types = ["Schema structured data not available. @graph not found"]
+            pass
 
     return schema_types, schema_headings
 
     print("Valid structured data...")
 
 def get_all_internal_links(page_html, response, seo_elements):
-
+    """
+    Get all the links on the input webpage. Returns a list of links.
+    """
     internal_links = []
 
     for link in page_html.find_all("a"):
-        
         internal_links.append(link.get("href"))
+    
+    print(internal_links)
 
     return internal_links
 
@@ -305,7 +311,7 @@ def main():
     seo_elements = get_seo_elements(page_html, response, http_url)
     header_tags, header_values = get_headers(page_html, seo_elements)
     schema_types, schema_headings = get_page_json(page_html)
-    #internal_links = get_all_internal_links(page_html, response, seo_elements)
+    internal_links = get_all_internal_links(page_html, response, seo_elements)
     update_on_page_elements_worksheet(seo_elements)
     update_headers_worksheet(header_tags, header_values)
     update_schema_worksheet(schema_types, schema_headings)
