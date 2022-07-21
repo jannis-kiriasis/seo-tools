@@ -338,25 +338,6 @@ def final():
         else:
             print("Invalid entry. Enter 'new' to restart.\n")
 
-# lists
-urls=[]
-
-# function created
-def scrape(page_html, final_url):
-	for i in page_html.find_all("a"):
-		
-		href = i.attrs['href']
-		
-		if href.startswith("/"):
-			final_url = final_url+href
-			
-			if final_url not in urls:
-				urls.append(final_url)
-				print(final_url)
-				# calling it self
-				scrape(page_html, final_url)
-print(urls)
-
 def main():
     """ 
     Run all the program functions.
