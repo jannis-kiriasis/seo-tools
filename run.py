@@ -1,4 +1,4 @@
-import bs4, requests, gspread, validators, json
+import bs4, requests, gspread, validators, json, re
 from google.oauth2.service_account import Credentials
 from googleapiclient import discovery
 
@@ -338,6 +338,25 @@ def final():
         else:
             print("Invalid entry. Enter 'new' to restart.\n")
 
+# lists
+urls=[]
+
+# function created
+def scrape(page_html, final_url):
+	for i in page_html.find_all("a"):
+		
+		href = i.attrs['href']
+		
+		if href.startswith("/"):
+			final_url = final_url+href
+			
+			if final_url not in urls:
+				urls.append(final_url)
+				print(final_url)
+				# calling it self
+				scrape(page_html, final_url)
+print(urls)
+
 def main():
     """ 
     Run all the program functions.
@@ -355,41 +374,9 @@ def main():
     update_internal_links_worksheet(internal_links)
     final()
 
+
 #main()
 #option_selection()
 
-# lists
-urls=[]
 
-# function created
-def scrape(site):
-	
-	# getting the request from url
-	r = requests.get(site)
-	
-	# converting the text
-	links = bs4.BeautifulSoup(r.text,"html.parser")
-	
-	for i in links.find_all("a"):
-		
-		href = i.attrs['href']
-		
-		if href.startswith("/"):
-			site = site+href
-			
-			if site not in urls:
-				urls.append(site)
-				print(site)
-				# calling it self
-				scrape(site)
-print(urls)
-
-# main function
-if __name__ =="__main__":
-
-	# website to be scrape
-	site="http://example.webscraping.com//"
-
-	# calling function
-	scrape(site)
 	
