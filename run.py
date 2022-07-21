@@ -222,7 +222,7 @@ def get_headers(page_html, seo_elements):
         header_tags = ["'" + seo_elements["final url"] + "'" + " headings not set"]
         header_values = ["'" + seo_elements["final url"] + "'" + " headings not set"]
     
-    return header_tags, header_values
+    return header_tags, header_values, list_headers
 
 def get_page_json(page_html):
     """
@@ -275,20 +275,18 @@ def update_on_page_elements_worksheet(seo_elements):
     """
     print(f"Updating on_page_elements worksheet...")
 
-    on_page_elements.append_row(list(seo_elements.keys()))
-    on_page_elements.append_row(list(seo_elements.values()))
+    print(seo_elements)
 
     print("on_page_elements worksheet updated.\n")
 
-def update_headers_worksheet(header_tags, header_values):
+def update_headers_worksheet(header_tags, header_values, list_headers):
     """ 
     Receive headers to be inserted in a worksheet.
     Update the worksheet with the data provided.
     """
     print(f"Updating headers worksheet...")
 
-    headers_worksheet.append_row(header_tags)
-    headers_worksheet.append_row(header_values)
+    print(list_headers)
 
     print("headers worksheet updated.\n")
 
@@ -300,12 +298,10 @@ def update_schema_worksheet(schema_types, schema_headings):
     print(f"Updating schema worksheet...")
 
     try:
-        schema.append_row(schema_headings)
-        schema.append_row(schema_types)
+        print(schema_types)
         print("schema worksheet updated.\n")
     except:
         print("!!!schema worksheet not updated due to invalid schema.!!!\n")
-        schema.update("A2", "Schema not available")
         pass
 
 def update_internal_links_worksheet(internal_links):
@@ -315,7 +311,7 @@ def update_internal_links_worksheet(internal_links):
     """
     print(f"Updating internal_links worksheet...")
 
-    internal_links_worksheet.update("A1", [internal_links])
+    print(internal_links)
 
     print("internal_links worksheet updated.\n")
 
@@ -324,9 +320,7 @@ def final():
     Give a final message to the user. If the user enter 'new' the program restarts
     automatically.
     """
-    print("All the operation have been completed.")
-    print("Check out the spreadsheet\nhttps://docs.google.com/spreadsheets/d/116Jzab1G3xjA5_K9yNMnzWjsDGHHxbFNwTS3G3YOO7E/edit?usp=sharing\nto see your results.\n")
-
+    
     new_crawl = "old"
     while new_crawl != "new":
 
@@ -346,17 +340,17 @@ def main():
     http_url = validate_link(page_link)
     page_html, response, final_url = get_page_html(http_url)
     seo_elements = get_seo_elements(page_html, response, http_url, final_url)
-    header_tags, header_values = get_headers(page_html, seo_elements)
+    header_tags, header_values, list_headers = get_headers(page_html, seo_elements)
     schema_types, schema_headings = get_page_json(page_html)
     internal_links = get_all_internal_links(page_html)
     update_on_page_elements_worksheet(seo_elements)
-    update_headers_worksheet(header_tags, header_values)
+    update_headers_worksheet(header_tags, header_values, list_headers)
     update_schema_worksheet(schema_types, schema_headings)
     update_internal_links_worksheet(internal_links)
     final()
 
 
-#main()
+main()
 #option_selection()
 
 
