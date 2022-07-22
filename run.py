@@ -1,4 +1,5 @@
 import bs4, requests, validators, json
+from tabulate import tabulate
 
 def get_input_url():
     """
@@ -211,7 +212,7 @@ def get_headers(page_html):
         header_tags = ["Headings not set"]
         header_values = ["Headings not set"]
     
-    update_headers(header_tags, header_values, list_headers)
+    update_headers(list_headers)
 
 
 def get_page_json(page_html):
@@ -240,7 +241,7 @@ def get_page_json(page_html):
                 schema_headings.append("@type")
                 schema_types.append(x["@type"])            
         except:
-            schema_types = ["Schema structured data not available. @graph not found"]
+            schema_types = None
             pass
 
     print("Valid structured data...")
@@ -266,17 +267,18 @@ def update_on_page_elements(seo_elements):
     """
     print(f"Printing on_page_elements...")
 
-    print(seo_elements)
+    table = zip(seo_elements.keys(), seo_elements.values())
+    print(tabulate(table))
 
     print("on_page_elements printed.\n")
 
-def update_headers(header_tags, header_values, list_headers):
+def update_headers(list_headers):
     """ 
     Receive headers and print the results.
     """
-    print(f"Printing headers...")
+    print(f"Printing headers...\n")
 
-    print(list_headers)
+    print(tabulate(list_headers))
 
     print("headers printed.\n")
 
@@ -284,11 +286,14 @@ def update_schema(schema_types, schema_headings):
     """ 
     Receive json schema and print the results.
     """
-    print(f"Printing schema...")
+    print(f"Printing schema types...")
 
     try:
-        print(schema_types)
-        print("schema printed.\n")
+        if schema_types is not None:
+            print(tabulate(schema_types))
+            print("schema printed.\n")
+        else:
+            print("Schema not available.")
     except:
         print("!!!schema worksheet not updated due to invalid schema.!!!\n")
         pass
@@ -299,7 +304,8 @@ def update_internal_links(internal_links):
     """
     print(f"Printing internal_links...")
 
-    print(internal_links)
+    for link in internal_links:
+        print(link)
 
     print("internal_links printed.\n")
 
@@ -330,9 +336,7 @@ def main():
     option_selection(final_url,page_html,response, http_url)    
     final()
 
-
 main()
-#option_selection()
 
 
 	
