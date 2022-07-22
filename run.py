@@ -1,24 +1,5 @@
 import bs4, requests, validators, json
 
-def option_selection():
-    """
-    Select an option to start one of the 2 programs.
-    """
-    option = "0"
-    while option != "2" and option != "1":
-        print("\nEnter one of the following:\n")
-        print("\n1 to enter a URL and get a list of the pages within that subdomain.")
-        print("2 to enter a URL and get its SEO on page elements.\n")
-
-        option = input("Enter 1 or 2:\n")
-
-        if option == "2":
-            main()
-        if option == "1":
-            site_urls()
-        else:
-            print("Invalid entry. Enter 1 or 2.")
-
 def get_input_url():
     """
     Get input url to scrape from user.
@@ -100,6 +81,31 @@ def get_page_html(http_url):
 
     return page_html, response, final_url
 
+def option_selection(final_url,page_html, response, http_url):
+    """
+    Select an option to start one of the programs.
+    """
+    option = "0"
+    while option != "2" and option != "1" and option != "3" and option != "4":
+        print("\nEnter one of the following:\n")
+        print("\n1. To get the SEO on page elements.")
+        print("2. To get a list of headings with their tags.")
+        print("3. To get the page schema markup.")
+        print("4. To get all the page links.")
+
+        option = input("Enter one option:\n")
+
+        if option == "2":
+            get_headers(page_html)
+        if option == "1":
+            get_seo_elements(page_html, response, http_url, final_url)
+        if option == "3":
+            get_page_json(page_html)
+        if option == "4":
+            get_all_internal_links(page_html)
+        else:
+            print("\nInvalid entry. Enter a number from 1 to 4.")
+
 def get_seo_elements(page_html, response, http_url, final_url):
     """
     This function finds all the SEO on page elements and builds a dictionary.
@@ -169,9 +175,10 @@ def get_seo_elements(page_html, response, http_url, final_url):
         "hreflangs": hreflangs_str,
     }
 
-    return seo_elements
+    update_on_page_elements(seo_elements)
 
-def get_headers(page_html, seo_elements):
+
+def get_headers(page_html):
     """
     Get the headers from the page html.
     Create a list of header tags and a list of header tag values.
@@ -201,10 +208,11 @@ def get_headers(page_html, seo_elements):
 
     if header_tags == [] and header_values == []:
 
-        header_tags = ["'" + seo_elements["final url"] + "'" + " headings not set"]
-        header_values = ["'" + seo_elements["final url"] + "'" + " headings not set"]
+        header_tags = ["Headings not set"]
+        header_values = ["Headings not set"]
     
-    return header_tags, header_values, list_headers
+    update_headers(header_tags, header_values, list_headers)
+
 
 def get_page_json(page_html):
     """
@@ -235,9 +243,10 @@ def get_page_json(page_html):
             schema_types = ["Schema structured data not available. @graph not found"]
             pass
 
-    return schema_types, schema_headings
-
     print("Valid structured data...")
+
+    update_schema(schema_types, schema_headings)
+
 
 def get_all_internal_links(page_html):
     """
@@ -248,7 +257,8 @@ def get_all_internal_links(page_html):
     for link in page_html.find_all("a"):
         internal_links.append(link.get("href"))
     
-    return internal_links
+    update_internal_links(internal_links)
+
 
 def update_on_page_elements(seo_elements):
     """ 
@@ -317,14 +327,7 @@ def main():
     page_link = get_input_url()
     http_url = validate_link(page_link)
     page_html, response, final_url = get_page_html(http_url)
-    seo_elements = get_seo_elements(page_html, response, http_url, final_url)
-    header_tags, header_values, list_headers = get_headers(page_html, seo_elements)
-    schema_types, schema_headings = get_page_json(page_html)
-    internal_links = get_all_internal_links(page_html)
-    update_on_page_elements(seo_elements)
-    update_headers(header_tags, header_values, list_headers)
-    update_schema(schema_types, schema_headings)
-    update_internal_links(internal_links)
+    option_selection(final_url,page_html,response, http_url)    
     final()
 
 
