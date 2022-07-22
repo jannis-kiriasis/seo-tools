@@ -1,22 +1,4 @@
-import bs4, requests, gspread, validators, json, re
-from google.oauth2.service_account import Credentials
-from googleapiclient import discovery
-
-SCOPE = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive"
-    ]
-
-CREDS = Credentials.from_service_account_file("creds.json")
-SCOPED_CREDS = CREDS.with_scopes(SCOPE)
-GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open("seo_tools")
-
-on_page_elements = SHEET.worksheet("on_page_elements")
-headers_worksheet = SHEET.worksheet("headers")
-schema = SHEET.worksheet("schema")
-internal_links_worksheet = SHEET.worksheet("internal_links")
+import bs4, requests, validators, json
 
 def option_selection():
     """
@@ -268,52 +250,48 @@ def get_all_internal_links(page_html):
     
     return internal_links
 
-def update_on_page_elements_worksheet(seo_elements):
+def update_on_page_elements(seo_elements):
     """ 
-    Receive seo_elements to be inserted in a worksheet.
-    Update the worksheet with the data provided.
+    Receive seo_elements and print the results.
     """
-    print(f"Updating on_page_elements worksheet...")
+    print(f"Printing on_page_elements...")
 
     print(seo_elements)
 
-    print("on_page_elements worksheet updated.\n")
+    print("on_page_elements printed.\n")
 
-def update_headers_worksheet(header_tags, header_values, list_headers):
+def update_headers(header_tags, header_values, list_headers):
     """ 
-    Receive headers to be inserted in a worksheet.
-    Update the worksheet with the data provided.
+    Receive headers and print the results.
     """
-    print(f"Updating headers worksheet...")
+    print(f"Printing headers...")
 
     print(list_headers)
 
-    print("headers worksheet updated.\n")
+    print("headers printed.\n")
 
-def update_schema_worksheet(schema_types, schema_headings):
+def update_schema(schema_types, schema_headings):
     """ 
-    Receive json schema to be inserted in a worksheet.
-    Update the worksheet with the data provided.
+    Receive json schema and print the results.
     """
-    print(f"Updating schema worksheet...")
+    print(f"Printing schema...")
 
     try:
         print(schema_types)
-        print("schema worksheet updated.\n")
+        print("schema printed.\n")
     except:
         print("!!!schema worksheet not updated due to invalid schema.!!!\n")
         pass
 
-def update_internal_links_worksheet(internal_links):
+def update_internal_links(internal_links):
     """ 
-    Receive internal_links to be inserted in a worksheet.
-    Update the worksheet with the data provided.
+    Receive internal_links and print the results.
     """
-    print(f"Updating internal_links worksheet...")
+    print(f"Printing internal_links...")
 
     print(internal_links)
 
-    print("internal_links worksheet updated.\n")
+    print("internal_links printed.\n")
 
 def final():
     """
@@ -343,10 +321,10 @@ def main():
     header_tags, header_values, list_headers = get_headers(page_html, seo_elements)
     schema_types, schema_headings = get_page_json(page_html)
     internal_links = get_all_internal_links(page_html)
-    update_on_page_elements_worksheet(seo_elements)
-    update_headers_worksheet(header_tags, header_values, list_headers)
-    update_schema_worksheet(schema_types, schema_headings)
-    update_internal_links_worksheet(internal_links)
+    update_on_page_elements(seo_elements)
+    update_headers(header_tags, header_values, list_headers)
+    update_schema(schema_types, schema_headings)
+    update_internal_links(internal_links)
     final()
 
 
