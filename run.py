@@ -15,6 +15,9 @@ def get_input_url():
         print("Are you ready to scrape a webpage?")
         page_link = input("Enter the url you want to scrape:\n")
 
+        page_link = page_link.strip()
+        page_link = page_link.lower()
+
         print(f"Thank you! I'm validating {page_link}...\n")
         print("Checking http schema...\n")
 
