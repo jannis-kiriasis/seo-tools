@@ -7,6 +7,9 @@ def get_input_url():
     Check if the url starts with http, if not add http scheme.
     After check for http, check if url works.
     Return url with http.
+
+    Returns:
+        http_url validated.
     """
     while True:
         print("Are you ready to scrape a webpage?")
@@ -39,13 +42,28 @@ def add_http(page_link):
     """ 
     This function adds the http scheme in front of the url in case it is missing.
     Then after the http as been added, the url is passed to validate_link.
+
+    Args:
+        page_link: the input link from the user.
+    
+    Returns: 
+        page_link with http scheme.
     """
+
     page_link = "http://" + page_link
     return page_link
 
 def validate_link(page_link):
     """ 
-    Check if the user input is a valid url.
+    Check if the user input is a valid url. If it is not valid
+    the program restarts or asks for a valid url.
+
+    Args:
+        page_link: the input_link with http scheme.
+
+    Returns:
+        http_url: the url validated with http scheme.
+
     """
 
     #This logic check if the url is real by sending a request.
@@ -70,8 +88,15 @@ def validate_link(page_link):
 def get_page_html(http_url):
     """
     Send a get HTTP request to page_link and receive the html of the page.
-    raise_for_status verifies that the request is good.
-    Return a dictionary of the seo elements parsed.
+
+    Args:
+        http_url: the url validated with http scheme.
+    
+    Returns:
+        page_html: the whole page html.
+        response: the get request to the url.
+        final_url: the url to crawl after the redirections.
+
     """
     print("Url is valid...\n")
     print(f"Parsing {http_url} page html...\n")
@@ -90,9 +115,16 @@ def get_page_html(http_url):
 
     return page_html, response, final_url
 
-def option_selection(final_url,page_html, response, http_url):
+def option_selection(final_url, page_html, response, http_url):
     """
-    Select an option to start one of the programs.
+    Select an option to start one of the programs. The args below are needed 
+    to run the functions called.
+
+    Args:
+        page_html: the whole page html.
+        response: the get request to the url.
+        final_url: the url to crawl after the redirections.
+        http_url: the url validated with http scheme.
     """
     option = "0"
     while option != "2" and option != "1" and option != "3" and option != "4":
@@ -122,6 +154,18 @@ def get_seo_elements(page_html, response, http_url, final_url):
     the rules are set to find the SEO elements only if they exists, 
     are spelled correctly and are lowercase. Without the checks in place, 
     the function will throw multiple errors.
+    Call a function to print the results on the terminal.
+
+
+    Args:
+        page_html: the whole page html.
+        response: the get request to the url.
+        final_url: the url to crawl after the redirections.
+        http_url: the url validated with http scheme.
+    
+    Returns:
+        seo_elements: dictionary. A dictionary of the most important on page 
+        SEO elements on the page.
     """
 
     print("Getting SEO on page elements...\n")
@@ -191,6 +235,14 @@ def get_headers(page_html):
     """
     Get the headers from the page html.
     Create a list of header tags and a list of header tag values.
+    Call a function to print the results on the terminal.
+
+    Args:
+        page_html: the whole page html.
+
+    Returns:
+        header_tags: a list of all the heading tags.
+        Header_valudes: a list of all the headings values.
     """
     #Give me all the headers in a html document
 
@@ -226,8 +278,15 @@ def get_headers(page_html):
 def get_page_json(page_html):
     """
     Get page json and extract schema mark up.
-    The error handling skip this step when the schema is not found or invalid or 
-    doens't follow the estraction rule.
+    The error handling skips this step when the schema is not found or invalid 
+    or doens't follow the estraction rule.
+    Call a function to print the results on the terminal.
+
+    Args:
+        page_html: the whole page html.
+
+    Returns: 
+        json_schema: the schema markup on the page if available.
     """
     print("Parsing the page structured data...\n")
  
@@ -241,7 +300,7 @@ def get_page_json(page_html):
     if json_schema is not None:
         json_file = json.loads(json_schema.get_text())
 
-        #In most of the cases a schema dictiorary starts with @graph, 
+        #In most of the cases a schema dictionary starts with @graph, 
         #but not always. At this time, I can find the schema @type only if the 
         #dictiorary is @graph.
         try:
@@ -260,6 +319,14 @@ def get_page_json(page_html):
 def get_all_internal_links(page_html):
     """
     Get all the links on the input webpage. Returns a list of links.
+    Call a function to print the results on the terminal.
+    
+    Args:
+        page_html: the whole page html.
+
+    Returns:
+        internal_links: a list of all internal links.
+
     """
     internal_links = []
 
