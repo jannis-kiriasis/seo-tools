@@ -130,7 +130,7 @@ def get_seo_elements(page_html, response, http_url, final_url):
     title_temp = page_html.find("title")
 
     if title_temp is None:
-        title = "not available"
+        title = "<not available>"
     if title_temp is not None:
         title = title_temp.get_text()
 
@@ -139,7 +139,7 @@ def get_seo_elements(page_html, response, http_url, final_url):
     meta_desc_temp = page_html.find("meta", attrs={"name":"description"})
     
     if meta_desc_temp is None:
-        meta_description = "not available"
+        meta_description = "<not available>"
     if meta_desc_temp is not None:
         meta_description = meta_desc_temp["content"]
 
@@ -148,7 +148,7 @@ def get_seo_elements(page_html, response, http_url, final_url):
     robots_temp = page_html.find("meta", attrs={"name":"robots"})
 
     if robots_temp is None:
-        robots = "Not available"
+        robots = "<Not available>"
     if robots_temp is not None:
         robots = robots_temp["content"]
     
@@ -157,7 +157,7 @@ def get_seo_elements(page_html, response, http_url, final_url):
     canonical_temp = page_html.find("link", attrs={"rel":"canonical"})
     
     if canonical_temp is None:
-        canonical = "Not available"
+        canonical = "<Not available>"
     if canonical_temp is not None:
         canonical = canonical_temp["href"]   
 
@@ -301,7 +301,7 @@ def update_schema(schema_types, schema_headings):
             print(tabulate(schema_types))
             print("schema printed.\n")
         else:
-            print("Schema not available.")
+            print("<Schema not available.>")
     except:
         print("!!!schema worksheet not updated due to invalid schema.!!!\n")
         pass
