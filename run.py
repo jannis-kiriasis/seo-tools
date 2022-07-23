@@ -15,6 +15,10 @@ def get_input_url():
         print(f"Thank you! I'm validating {page_link}...\n")
         print("Checking http schema...\n")
 
+        if page_link.isnumeric():
+            print("Please enter a valid URL.")
+            get_input_url()
+
         if page_link.startswith("http://") or page_link.startswith("https://"):
             if validate_link(page_link):
                 http_url = page_link
@@ -22,8 +26,12 @@ def get_input_url():
         else:
             http_url = add_http(page_link)
             print(f"Added scheme. New url: {http_url}\n")
-            if validate_link(http_url):
-                break
+            try: 
+                if validate_link(http_url):
+                    break
+            except:
+                print("Please enter a valid URL.")
+                get_input_url()
 
     return http_url
 
