@@ -1,4 +1,4 @@
-import bs4, requests, validators, json
+import bs4, requests, validators, json, textwrap
 from tabulate import tabulate
 
 def get_input_url():
@@ -226,13 +226,13 @@ def get_seo_elements(page_html, response, http_url, final_url):
     seo_elements = {
         "input url": http_url,
         "final url": final_url,
-        "title": title,
+        "title": textwrap.fill(title, 50),
         "title_length": str(len(title)) + "/ 65",
-        "meta_description": meta_description,
+        "meta_description": textwrap.fill(meta_description, 50),
         "meta_description_length": str(len(meta_description)) + "/ 154",
-        "robots": robots,
+        "robots": textwrap.fill(robots, 50),
         "canonical": canonical,
-        "hreflangs": hreflangs_str,
+        "hreflangs": textwrap.fill(hreflangs_str, 50)
     }
 
     update_on_page_elements(seo_elements)
