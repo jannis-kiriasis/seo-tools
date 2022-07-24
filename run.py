@@ -1,4 +1,8 @@
-import bs4, requests, validators, json, textwrap
+import bs4
+import requests
+import validators
+import json
+import textwrap
 from tabulate import tabulate
 
 def get_input_url():
@@ -98,8 +102,8 @@ def get_page_html(http_url):
         page_html: the whole page html.
         response: the get request to the url.
         final_url: the url to crawl after the redirections.
-
     """
+
     print("Url is valid...\n")
     print(f"Parsing {http_url} page html...\n")
 
@@ -131,6 +135,7 @@ def option_selection(final_url, page_html, response, http_url):
     Return:
         Option: retuns option to stop the while loop.
     """
+
     option = "0"
     while option != "2" and option != "1" and option != "3" and option != "4":
         print("\nEnter one of the following:\n")
@@ -234,7 +239,6 @@ def get_seo_elements(page_html, response, http_url, final_url):
 
     update_on_page_elements(seo_elements)
 
-
 def get_headers(page_html):
     """
     Get the headers from the page html.
@@ -244,8 +248,8 @@ def get_headers(page_html):
     Args:
         page_html: the whole page html.
     """
-    #Give me all the headers in a html document
 
+    #Give me all the headers in a html document
     headers = page_html.find_all(["h1","h2","h3","h4","h5","h6"])
 
     #Cleaning the headers list to get the tag and the text 
@@ -267,6 +271,7 @@ def get_page_json(page_html):
     Args:
         page_html: the whole page html.
     """
+
     print("Parsing the page structured data...\n")
  
     schema_types = []
@@ -300,13 +305,13 @@ def get_all_internal_links(page_html):
     Args:
         page_html: the whole page html.
     """
+
     internal_links = []
 
     for link in page_html.find_all("a"):
         internal_links.append(link.get("href"))
     
     update_internal_links(internal_links)
-
 
 def update_on_page_elements(seo_elements):
     """ 
