@@ -87,7 +87,7 @@ def validate_link(page_link):
 
     # Check if the url is accessible (if there is a server error)
     valid = validators.url(page_link)
-    if valid is True:
+    if valid:
         http_url = page_link
         return http_url
     else:
@@ -304,7 +304,7 @@ def get_page_json(page_html):
             for x in json_file["@graph"]:
                 schema_types.append(x["@type"])
         except:
-            schema_types = None
+            schema_types is None
             pass
 
         print("Valid structured data...")
@@ -365,6 +365,7 @@ def update_schema(schema_types):
     Args:
         schema_type: List of schema types on the page.
     """
+
     print(f"Printing schema types...")
     print("\n-------------------------------\n")
 
