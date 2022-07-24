@@ -5,7 +5,7 @@ def get_input_url():
     """
     Get input url to scrape from user.
     Check if the url starts with http, if not add http scheme.
-    After check for http, check if url works.
+    After checking for http, check if url works.
     Return url with http.
 
     Returns:
@@ -66,7 +66,6 @@ def validate_link(page_link):
 
     Returns:
         http_url: the url validated with http scheme.
-
     """
 
     #This logic check if the url is real by sending a request.
@@ -128,6 +127,9 @@ def option_selection(final_url, page_html, response, http_url):
         response: the get request to the url.
         final_url: the url to crawl after the redirections.
         http_url: the url validated with http scheme.
+    
+    Return:
+        Option: retuns option to stop the while loop.
     """
     option = "0"
     while option != "2" and option != "1" and option != "3" and option != "4":
@@ -163,16 +165,11 @@ def get_seo_elements(page_html, response, http_url, final_url):
     the function will throw multiple errors.
     Call a function to print the results on the terminal.
 
-
     Args:
         page_html: the whole page html.
         response: the get request to the url.
         final_url: the url to crawl after the redirections.
         http_url: the url validated with http scheme.
-    
-    Returns:
-        seo_elements: dictionary. A dictionary of the most important on page 
-        SEO elements on the page.
     """
 
     print("Getting SEO on page elements...\n")
@@ -246,9 +243,6 @@ def get_headers(page_html):
 
     Args:
         page_html: the whole page html.
-
-    Returns:
-        list_headers: Tuples with heading tags and values.
     """
     #Give me all the headers in a html document
 
@@ -263,7 +257,6 @@ def get_headers(page_html):
     
     update_headers(list_headers)
 
-
 def get_page_json(page_html):
     """
     Get page json and extract schema mark up.
@@ -273,9 +266,6 @@ def get_page_json(page_html):
 
     Args:
         page_html: the whole page html.
-
-    Returns: 
-        json_schema: the schema markup on the page if available.
     """
     print("Parsing the page structured data...\n")
  
@@ -302,7 +292,6 @@ def get_page_json(page_html):
 
         update_schema(schema_types)
 
-
 def get_all_internal_links(page_html):
     """
     Get all the links on the input webpage. Returns a list of links.
@@ -310,10 +299,6 @@ def get_all_internal_links(page_html):
     
     Args:
         page_html: the whole page html.
-
-    Returns:
-        internal_links: a list of all internal links.
-
     """
     internal_links = []
 
@@ -326,6 +311,9 @@ def get_all_internal_links(page_html):
 def update_on_page_elements(seo_elements):
     """ 
     Receive seo_elements and print the results.
+
+    Args:
+        seo_elements: dictionary on on page elements.
     """
     print(f"Printing on_page_elements...")
 
@@ -337,6 +325,9 @@ def update_on_page_elements(seo_elements):
 def update_headers(list_headers):
     """ 
     Receive headers and print the results.
+
+    Args:
+        list_headers: Tuples of heading tags + values.
     """
     if list_headers != []:
         print(f"Printing headers...\n")
@@ -346,6 +337,9 @@ def update_headers(list_headers):
 def update_schema(schema_types):
     """ 
     Receive json schema and print the list of schema types.
+
+    Args:
+        schema_type: List of schema types on the page.
     """
     print(f"Printing schema types...")
     print("\n-------------------------------\n")
@@ -381,8 +375,8 @@ def update_internal_links(internal_links):
 
 def final():
     """
-    Give a final message to the user. If the user enter 'new' the program restarts
-    automatically.
+    Give a final message to the user. If the user enter 'new' 
+    the program restarts automatically.
     """
     
     new_crawl = "old"
