@@ -141,12 +141,16 @@ def option_selection(final_url, page_html, response, http_url):
 
         if option == "2":
             get_headers(page_html)
+            return option
         if option == "1":
             get_seo_elements(page_html, response, http_url, final_url)
+            return option
         if option == "3":
             get_page_json(page_html)
+            return option
         if option == "4":
             get_all_internal_links(page_html)
+            return option
         else:
             print("\nInvalid entry. Enter a number from 1 to 4.")
 
@@ -371,7 +375,7 @@ def update_schema(schema_types, schema_headings):
             print(tabulate(schema_types))
             print("schema printed.\n")
         else:
-            print("<Schema not available.>")
+            print("\n<Schema not available.>\n")
     except:
         print("!!!schema worksheet not updated due to invalid schema.!!!\n")
         pass
@@ -380,12 +384,14 @@ def update_internal_links(internal_links):
     """ 
     Receive internal_links and print the results.
     """
-    print(f"Printing internal_links...")
+    print("\n------------------------------------")
+    print(f"Printing internal_links...\n")
 
     for link in internal_links:
         print(link)
 
-    print("internal_links printed.\n")
+    print("\n-----------------------------------")
+    print("\ninternal_links printed.\n")
 
 def final():
     """
