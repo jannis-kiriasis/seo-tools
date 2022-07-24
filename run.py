@@ -248,8 +248,7 @@ def get_headers(page_html):
         page_html: the whole page html.
 
     Returns:
-        header_tags: a list of all the heading tags.
-        Header_valudes: a list of all the headings values.
+        list_headers: Tuples with heading tags and values.
     """
     #Give me all the headers in a html document
 
@@ -259,25 +258,8 @@ def get_headers(page_html):
     #as different elements in a list
     list_headers = [[str(x)[1:3], x.get_text()] for x in headers]
 
-    #Separate the header tags and tag values in 2 different lists
-    #The while loop takes all the elements in position 0 and create a list.
-    #Then all the elements in position 1 and create a list.
-    i = 0    
-    header_tags = []
-    header_values = []
-
-    while i < len(list_headers):
-        header_tags.append(list_headers[i][0])
-        header_values.append(list_headers[i][1])
-        i += 1
-    
-    #If the headings don't exist, write "URL headings not set" instead of 
-    #leaving a black worksheet
-
-    if header_tags == [] and header_values == []:
-
-        header_tags = ["Headings not set"]
-        header_values = ["Headings not set"]
+    if list_headers == []:
+        print("\nThere are not HTML headings.\n")
     
     update_headers(list_headers)
 
@@ -358,11 +340,10 @@ def update_headers(list_headers):
     """ 
     Receive headers and print the results.
     """
-    print(f"Printing headers...\n")
-
-    print(tabulate(list_headers))
-
-    print("headers printed.\n")
+    if list_headers != []:
+        print(f"Printing headers...\n")
+        print(tabulate(list_headers))
+        print("headers printed.\n")
 
 def update_schema(schema_types, schema_headings):
     """ 
