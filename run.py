@@ -280,13 +280,12 @@ def get_page_json(page_html):
     print("Parsing the page structured data...\n")
  
     schema_types = []
-    schema_headings = []
     
     json_schema = page_html.find("script",attrs={"type":"application/ld+json"})
 
     if json_schema is None:
-        schema_headings = ["There is no structured data."]
-    if json_schema is not None:
+        print("\nThere is no structured data.\n")
+    else:
         json_file = json.loads(json_schema.get_text())
 
         #In most of the cases a schema dictionary starts with @graph, 
@@ -294,15 +293,14 @@ def get_page_json(page_html):
         #dictiorary is @graph.
         try:
             for x in json_file["@graph"]:
-                schema_headings.append("@type")
                 schema_types.append(x["@type"])            
         except:
             schema_types = None
             pass
 
-    print("Valid structured data...")
+        print("Valid structured data...")
 
-    update_schema(schema_types, schema_headings)
+        update_schema(schema_types)
 
 
 def get_all_internal_links(page_html):
@@ -345,7 +343,7 @@ def update_headers(list_headers):
         print(tabulate(list_headers))
         print("headers printed.\n")
 
-def update_schema(schema_types, schema_headings):
+def update_schema(schema_types):
     """ 
     Receive json schema and print the list of schema types.
     """
