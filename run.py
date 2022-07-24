@@ -347,13 +347,17 @@ def update_headers(list_headers):
 
 def update_schema(schema_types, schema_headings):
     """ 
-    Receive json schema and print the results.
+    Receive json schema and print the list of schema types.
     """
     print(f"Printing schema types...")
+    print("\n-------------------------------\n")
 
     try:
         if schema_types is not None:
-            print(tabulate(schema_types))
+            for type in schema_types:
+                print(type)
+                
+            print("\n------------------------------\n")
             print("schema printed.\n")
         else:
             print("\n<Schema not available.>\n")
@@ -364,9 +368,12 @@ def update_schema(schema_types, schema_headings):
 def update_internal_links(internal_links):
     """ 
     Receive internal_links and print the results.
+
+    Arg:
+        Internal_links: list of links on the webpage."
     """
-    print("\n------------------------------------")
     print(f"Printing internal_links...\n")
+    print("\n------------------------------------")
 
     for link in internal_links:
         print(link)
