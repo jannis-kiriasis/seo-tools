@@ -143,7 +143,7 @@ def option_selection(final_url, page_html, response, http_url):
     """
 
     option = "0"
-    while option != "2" and option != "1" and option != "3" and option != "4":
+    while option not in ["1", "2", "3", "4"]:
         print("\nEnter one of the following:\n")
         print("\n1. To get the SEO on page elements.")
         print("2. To get a list of headings with their tags.")
