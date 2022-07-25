@@ -1,5 +1,8 @@
 # Project 3 - SEO tools
 
+[Repository](https://github.com/jannis-kiriasis/seo-tools)
+[Live application](https://jk-seo-tools.herokuapp.com/)
+
 ## Table of contents
 -   [Introduction](#introduction)
 -	[User Experience (UX)](#user-experience-ux---user-stories)
