@@ -1,8 +1,9 @@
+import textwrap
 import bs4
 import requests
 import validators
 import json
-import textwrap
+
 from tabulate import tabulate
 
 
@@ -17,6 +18,7 @@ def get_input_url():
         http_url validated.
     """
     while True:
+        
         print("Are you ready to scrape a webpage?")
         page_link = input("Enter the url you want to scrape:\n")
 

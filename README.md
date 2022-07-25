@@ -1,21 +1,21 @@
 # Project 3 - SEO tools
 
-[Repository](https://github.com/jannis-kiriasis/seo-tools)
-[Live application](https://jk-seo-tools.herokuapp.com/)
+- [Repository](https://github.com/jannis-kiriasis/seo-tools)
+- [Live application](https://jk-seo-tools.herokuapp.com/)
+
+![Iamresponsive](./README-files/Iamresponsive.png)
 
 ## Table of contents
 -   [Introduction](#introduction)
 -	[User Experience (UX)](#user-experience-ux---user-stories)
 -	[Features](#features)
 -	[Where user stories meet features](#where-user-stories-meet-features)
--	[Wireframes](#wireframes)
+-	[Flowchart](#flowchart)
 -   [Features left to implement](#features-left-to-implement)
 -	[Technologies and tools used](#technologies-and-tools-used)
 -	[Testing](#testing)
 -	[Deployment](#deployment)
--	[Credits](#credits)
 -   [Acknowledgements](#acknowledgements)
--   [Disclaimer](#disclaimer)
 
 ## Introduction
 
@@ -193,7 +193,7 @@ The features are numbered and the same feature numbers appear in the table below
 | As a user, I want to be able to make another scrape easily           | 8        |
 | As a user, I want to be able to copy the results                     | 8        |
 
-## Wireframes
+## Flowchart
 
 The program has been develped with the following logic in mind.
 
