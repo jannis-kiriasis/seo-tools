@@ -304,7 +304,6 @@ def get_page_json(page_html):
             for x in json_file["@graph"]:
                 schema_types.append(x["@type"])
         except:
-            schema_types is None
             pass
 
         print("Valid structured data...")
