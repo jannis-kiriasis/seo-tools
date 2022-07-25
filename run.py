@@ -371,14 +371,16 @@ def update_schema(schema_types):
     print("\n-------------------------------\n")
 
     try:
-        if schema_types is not None:
+        if schema_types != []:
             for type in schema_types:
                 print(type)
 
             print("\n------------------------------\n")
             print("schema printed.\n")
         else:
-            print("\n<Schema not available.>\n")
+            print("I can't get the schema available.")
+            print("Try a different method (another app).\n")
+            print("---------------------------------\n")
     except:
         print("!!!schema worksheet not updated due to invalid schema.!!!\n")
         pass
