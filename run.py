@@ -150,7 +150,7 @@ def option_selection(final_url, page_html, response, http_url):
         print("3. To get the page schema markup.")
         print("4. To get all the page links.")
 
-        option = input("Enter one option:\n")
+        option = input("Enter one option:\n").strip().lower()
 
         if option == "2":
             get_headers(page_html)
@@ -409,7 +409,9 @@ def final():
     new_crawl = "old"
     while new_crawl != "new":
 
-        new_crawl = input("Enter 'new' to run a new page crawl:\n")
+        new_crawl = input(
+            "Enter 'new' to run a new page crawl:\n"
+        ).strip().lower()
 
         if new_crawl == "new":
             print("\n")
