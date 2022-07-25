@@ -18,7 +18,7 @@ def get_input_url():
         http_url validated.
     """
     while True:
-        
+
         print("Are you ready to scrape a webpage?")
         page_link = input("Enter the url you want to scrape:\n")
 
