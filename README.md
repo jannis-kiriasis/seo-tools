@@ -9,7 +9,6 @@
 -   [Features left to implement](#features-left-to-implement)
 -	[Technologies and tools used](#technologies-and-tools-used)
 -	[Testing](#testing)
--	[Issues fixed](#issues-fixed)
 -	[Deployment](#deployment)
 -	[Credits](#credits)
 -   [Acknowledgements](#acknowledgements)
@@ -259,7 +258,8 @@ There are no issues reported.
 
 ### Browser compatibility
 
-All the functionality tests have been carried out and achieved a PASS on the latest versions of the following browsers:
+All the functionality tests have been carried out and achieved a PASS 
+on the latest versions of the following browsers:
 - Google Chrome
 - Safari
 - Firefox
@@ -267,16 +267,13 @@ All the functionality tests have been carried out and achieved a PASS on the lat
 
 ### Responsiveness testing
 
-All the functionality tests have been carried out and achieved a PASS on the following screen resolutions:
+All the functionality tests have been carried out and achieved a PASS 
+on the following screen resolutions:
 - 365x667 (iPhone SE)
 - 540x720 (Surface Duo)
 - 1280x800 (Nest Hub Max)
 - 2560x1600 (Macbook Pro M1)
 
-The website has also been tested for responsiveness on [ami.responsivedesign.is](http://ami.responsivedesign.is/) with the following results:
-- [index.html](https://ui.dev/amiresponsive?url=https://jannis-kiriasis.github.io/insured/index.html)
-- [life-insurance-calculator.html](https://ui.dev/amiresponsive?url=https://jannis-kiriasis.github.io/insured/life-insurance-calculator.html)
-- [application-form.html](https://jannis-kiriasis.github.io/insured/application-form.html)
 
 ### User stories testing
 
@@ -293,60 +290,64 @@ I've tested whether the user needs have been satisfied with the features created
 | As a user, I want to be able to make another scrape easily           | 8        | PASS    |
 | As a user, I want to be able to copy the results                     | 8        | PASS    |
 
-## Issues fixed
-
-1. Cannot set properties of undefined (setting 'onclick'): I was using a function that I actually didn't need. I removed the function and the issue was gone.
-2. Cannot read properties of null (reading 'classList'): I was trying to add a class property to an element that didn't exist (past questions). In my `progressUpdate()` function a past question exists only if runningQuestion is in `runningQuestion[1]`, while in `runningQuestion[0]` past questions don't exists since `runningQuestion[0]` is the first question. So with an if stamement I made the code generating the error, running only if `runningQuestion !== 0`. This worked.
-3. Override iPhone / iPad default styling of submit button. The button isn't styled as declared in the CSS. Solution: add to the class .button `-webkit-appearance: none;`. [Stackoverflow](https://stackoverflow.com/questions/5438567/css-submit-button-weird-rendering-on-ipad-iphone).
-4. On mobile yes / no buttons were retaining the :hover styling after being clicked. I made the hover styling exist only for devices where hover is real with a media query. [Stackoverflow](https://stackoverflow.com/questions/23885255/how-to-remove-ignore-hover-css-style-on-touch-devices).
-
 
 ## Deployment
 
-I've deployed the website on GitHub Pages. The website was developed on Gitpod and pushed to its GitHub repository using git command lines in the terminal. Every time a commit pushed to the website's repository updates the HTML and CSS files, GitHub Pages automatically updates the live demo.
-To deploy the website:
-1. from the GitHub repository, click on 'settings'
-2. find and click on 'pages' on the setting sidebar menu
-3. select the branch to be used. In this case 'main'
-4. Refresh the page and in a few minutes, the following message will appear if the website was deployed correctly
-![website published](./README-files/published-github-pages.png)
+I've deployed the application on Heroku. The app was developed on Gitpod and 
+pushed to its GitHub repository using git command lines in the terminal. 
+Every time a commit pushed to the website's repository updates the files, 
+Heroku automatically updates the live demo.
+
+To deploy the application:
+1. Update the reuirements.txt file with `pip3 freeze > requirements.txt` in the terminal
+2. Commit changes
+3. [Go to Heroku](https://id.heroku.com/login) and create an account
+4. From the Heroku dashboard click on "Create new app"
+5. Enter a unique name and create app
+6. On the application configuration page click on settings
+7. Scroll up to Config Vars and add PORT 8000
+8. Scroll down to buildpacks
+9. Add Python buildpack and then node.js buildpack in this order. Save
+10. Go to the deploy tab and under deployment method select GitHub 
+11. Enter the name of the repository (https://github.com/jannis-kiriasis/seo-tools)
+12. Click connect to connect GitHub to Heroku
+13. Scroll down and chose automatic deployment or manual deployement then save
+14. On the application configuration page click on Open App.
+14. Run the program https://jk-seo-tools.herokuapp.com/
+
 
 To clone the website:
-1. Go to the GitHub repository [Insured](https://github.com/jannis-kiriasis/insured)
+1. Go to the GitHub repository [SEO-Tools](https://github.com/jannis-kiriasis/seo-tools)
 2. Open the dropdown 'Code'
-3. Copy the given url (https://github.com/jannis-kiriasis/insured.git)
-4. Open 'Git Bash' on your favourite code editor and select the location where you want to save the cloned directory
-5. Type `git clone https://github.com/jannis-kiriasis/insured.git` and press enter to create a local copy
+3. Copy the given url (https://github.com/jannis-kiriasis/seo-tools.git)
+4. Open 'Git Bash' on your favourite code editor and select the location 
+where you want to save the cloned directory
+5. Type `git clone https://github.com/jannis-kiriasis/seo-tools.git` and 
+press enter to create a local copy
 
-## Credits
-### Graphics
-
-- [Calculator icons created by Vitaly Gorbachev - Flaticon](https://www.flaticon.com/free-icons/calculator)
-- [Questionnaire icons created by netscript - Flaticon](https://www.flaticon.com/free-icons/questionnaire)
-- [Submit icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/submit)
-- [Arrow icons created by th studio - Flaticon](https://www.flaticon.com/free-icons/arrow)
-- [Arrow icons created by Handicon - Flaticon](https://www.flaticon.com/free-icons/arrow) 
 
 ## Acknowledgements
 
-I'm an SEO specialist working for an insurance company in Dublin. So I have some experience with Google tools and marketing life insurance policies to people.
+I'm an SEO specialist and I've been doing SEO for the last 5 years. 
+So I have some experience with Google tools and marketing.
 
-Brian Macharia, my mentor, helped me test the website functionalities and provide excellent recommendations.
+Brian Macharia, my mentor, helped me test the application functionalities and 
+provide excellent recommendations.
 
-I've followed [this video](https://www.youtube.com/watch?v=49pYIMygIcU&t=2066s) by Code Explained to create the logic to loop through the questions and create the progress bar (`progressUpdate()`, `nextQuestion()`, `leftQuestions()` and related event listeners and varibles). I've edited the code to fit this website.
+The following tutorials, videos and threads have helped me to create 
+parts of this application. The code has been edited as needed.
 
-I've used [this guide](https://www.javascripttutorial.net/javascript-dom/javascript-form-validation/) published on javascripttutorial.net to create part of the username input validation logic. The code was edited to fit this website.
+[Tutotial to send HTTP requests with beautifulsoup](https://www.youtube.com/watch?v=pFfLiCiTJ0Y&t=302s)
 
-I've used [this thread](https://stackoverflow.com/questions/17616624/detect-if-string-contains-any-spaces) to detect if the username input value contains any white spaces.
+[Tutorial to parse html elements needed for seo analysis](https://www.danielherediamejias.com/)guide-seo-onpage-scraping-python/
 
-To create the README.md file I've used a previously created by me README.md [digibooking README.md](https://github.com/jannis-kiriasis/digibooking/blob/main/README.md) and updated it as needed.
+[Return list of keys in a dictionary](https://stackoverflow.com/questions/16819222/how-to-return-dictionary-keys-as-a-list-in-python)
 
-## Disclaimer
+[Convert list to string](https://stackoverflow.com/questions/5618878/how-to-convert-list-to-string)
 
-I'm not a financial advisor. This website doesn't constitute financial advice and it has been created as part of a post graduate degree project. 
+[validate URL](https://www.codespeedy.com/check-if-a-string-is-a-valid-url-or-not-in-python/#:~:text=To%20check%20whether%20the%20string,%E2%80%A6)%20if%20URL%20is%20invalid)
 
-Your data aren't retained and will be deleted as the session expires. 
+[Wrap long string of text](https://stackoverflow.com/questions/16430200/a-good-way-to-make-long-strings-wrap-to-newline)
 
-By clicking apply, you aren't actually applying for a life insurance policy. 
+[Create tables in python](https://www.statology.org/create-table-in-python/)
 
-More factors need to be taken into consideration when deciding if to get a life insurance policy and calculating the amount. Don't rely on this website for your life insurance but contact a financial advisor.
