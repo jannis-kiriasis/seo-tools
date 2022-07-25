@@ -226,8 +226,9 @@ I've carried out the following tests:
 
 1. [PEP 8 testing](#pep-8-testing)
 2. [Funtionality testing](#functionality-testing)
-2. [Browsers compatibility](#browser-compatibility)
-3. [User stories testing](#user-stories-testing)
+3. [Browsers compatibility](#browser-compatibility)
+4. [Responsiveness testing](#responsiveness-testing)
+5. [User stories testing](#user-stories-testing)
 
 
 ### PEP 8 testing
