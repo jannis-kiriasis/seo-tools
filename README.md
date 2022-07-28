@@ -11,6 +11,7 @@
 -	[Features](#features)
 -	[Where user stories meet features](#where-user-stories-meet-features)
 -	[Flowchart](#flowchart)
+-   [Data model](#data-model)
 -   [Features left to implement](#features-left-to-implement)
 -	[Technologies and tools used](#technologies-and-tools-used)
 -	[Testing](#testing)
@@ -202,6 +203,9 @@ This was a first draft. Every node runs multiple subtasks to complete the task.
 
 ![Logic](./README-files/logic.png)
 
+## Data model
+The app receives the input url object and performs a serie of tasks on it to validate it. Once validated, the url is used to parse the page html and complete one of the 4 tasks available. Every task creates a new object that is printed on the terminal once the task is completed.
+
 ## Features left to implement 
 
 In future releases, the following features can be added:
@@ -209,6 +213,7 @@ In future releases, the following features can be added:
 2. More options to run other tasks at the end of a task
 3. A sitemap generator
 4. A logic to transform relative URLs into absolute URLs in task 3.
+
 
 ## Technologies and tools used
 
@@ -259,7 +264,6 @@ There are no issues reported.
 |     Option new            |     Enter new at   the end of the program                             |     The program   will restart and ask to enter a new URL.                                                                                |     PASS              |
 |     Option new            |     Enter   something different from new at the end of the program    |     The program   will ask you to enter 'new'                                                                                               |     PASS              |
 
-
 ### Browser compatibility
 
 All the functionality tests have been carried out and achieved a PASS 
@@ -278,7 +282,6 @@ on the following screen resolutions:
 - 1280x800 (Nest Hub Max)
 - 2560x1600 (Macbook Pro M1)
 
-
 ### User stories testing
 
 I've tested whether the user needs have been satisfied with the features created.
@@ -294,10 +297,8 @@ I've tested whether the user needs have been satisfied with the features created
 | As a user, I want to be able to make another scrape easily           | 8        | PASS    |
 | As a user, I want to be able to copy the results                     | 8        | PASS    |
 
-
 ## Known bugs
 If an incorrect url is entered multiple times, the app sometimes stops recognising valid urls until it throws an error. However, this is however difficult to replicate as it doesn't always happen.
-
 
 ## Deployment
 
@@ -323,7 +324,6 @@ To deploy the application:
 14. On the application configuration page click on Open App.
 14. Run the program https://jk-seo-tools.herokuapp.com/
 
-
 To clone the website:
 1. Go to the GitHub repository [SEO-Tools](https://github.com/jannis-kiriasis/seo-tools)
 2. Open the dropdown 'Code'
@@ -332,7 +332,6 @@ To clone the website:
 where you want to save the cloned directory
 5. Type `git clone https://github.com/jannis-kiriasis/seo-tools.git` and 
 press enter to create a local copy
-
 
 ## Acknowledgements
 
