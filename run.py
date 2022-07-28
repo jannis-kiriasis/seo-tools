@@ -52,7 +52,7 @@ def get_input_url():
 def add_http(page_link):
     """
     This function adds the http scheme in front of the url
-    in case it is missing. Then after the http as been added,
+    in case it is missing. Then after the http has been added,
     the url is passed to validate_link.
 
     Args:
@@ -174,7 +174,7 @@ def get_seo_elements(page_html, response, http_url, final_url):
     """
     This function finds all the SEO on page elements and builds a dictionary.
     Every SEO element is checked against type None. This is because
-    the rules are set to find the SEO elements only if they exists,
+    the rules are set to find the SEO elements only if they exist,
     are spelled correctly and are lowercase. Without the checks in place,
     the function will throw multiple errors.
     Call a function to print the results on the terminal.
