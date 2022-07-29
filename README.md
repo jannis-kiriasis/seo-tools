@@ -298,7 +298,7 @@ I've tested whether the user needs have been satisfied with the features created
 | As a user, I want to be able to copy the results                     | 8        | PASS    |
 
 ## Known bugs
-If an incorrect url is entered multiple times, the app sometimes stops recognising valid urls until it throws an error. However, this is however difficult to replicate as it doesn't always happen.
+If an incorrect url is entered multiple times, the app sometimes stops recognising valid urls until it throws an error. However, this is difficult to replicate as it doesn't always happen.
 
 ## Deployment
 
